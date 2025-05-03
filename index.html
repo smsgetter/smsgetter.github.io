@@ -3,37 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMSGetter // Bio Access Node v2.2</title>
+    <title>SMSGetter // Access Interface v3.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --clr-bg: #05060a;
-            --clr-panel-bg: rgba(18, 20, 35, 0.8);
-            --clr-panel-bg-alt: rgba(10, 12, 22, 0.7);
-            --clr-panel-border: rgba(161, 98, 247, 0.35);
-            --clr-panel-border-alt: rgba(0, 224, 255, 0.25);
+            --clr-bg: #08080d;
+            --clr-panel-bg: rgba(12, 14, 25, 0.85);
+            --clr-panel-border: rgba(161, 98, 247, 0.4);
+            --clr-panel-border-secondary: rgba(0, 224, 255, 0.3);
             --clr-primary: #ff33a8;
             --clr-secondary: #00e0ff;
             --clr-accent: #a162f7;
-            --clr-text: #dde1f0;
-            --clr-text-muted: #9aa0b8;
+            --clr-text: #e8e8f0;
+            --clr-text-muted: #a0a5c0;
+            --clr-text-header: #ffffff;
             --clr-text-ui: #00e0ff;
-            --clr-glow-primary: rgba(255, 51, 168, 0.6);
-            --clr-glow-secondary: rgba(0, 224, 255, 0.6);
-            --clr-glow-accent: rgba(161, 98, 247, 0.6);
-            --font-heading: 'Poppins', sans-serif;
+            --clr-glow-primary: rgba(255, 51, 168, 0.7);
+            --clr-glow-secondary: rgba(0, 224, 255, 0.7);
+            --clr-glow-accent: rgba(161, 98, 247, 0.7);
+
+            --font-display: 'Orbitron', sans-serif;
             --font-ui: 'Source Code Pro', monospace;
-            --radius: 6px;
+
+            --radius: 4px;
             --spacing-xs: 0.5rem;
-            --spacing-sm: 0.8rem;
-            --spacing-md: 1.5rem;
-            --spacing-lg: 2rem;
+            --spacing-sm: 0.75rem;
+            --spacing-md: 1.25rem;
+            --spacing-lg: 1.75rem;
             --spacing-xl: 2.5rem;
-            --transition-speed: 0.3s;
+            --transition-speed: 0.25s;
         }
 
         *, *::before, *::after {
@@ -44,362 +46,390 @@
 
         html {
             scroll-behavior: smooth;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         body {
             font-family: var(--font-ui);
             background-color: var(--clr-bg);
             color: var(--clr-text);
-            line-height: 1.6;
+            line-height: 1.65;
             overflow-x: hidden;
-            background:
-                radial-gradient(ellipse at 80% 20%, rgba(255, 51, 168, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 20% 80%, rgba(0, 224, 255, 0.1) 0%, transparent 50%),
-                linear-gradient(rgba(0, 224, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(161, 98, 247, 0.03) 1px, transparent 1px),
-                var(--clr-bg);
-            background-size: cover, cover, 40px 40px, 40px 40px, cover;
-            background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
+            background-image:
+                radial-gradient(circle at 15% 15%, var(--clr-glow-accent) 0%, transparent 30%),
+                radial-gradient(circle at 85% 80%, var(--clr-glow-primary) 0%, transparent 35%),
+                linear-gradient(rgba(0, 224, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(161, 98, 247, 0.02) 1px, transparent 1px);
+            background-size: cover, cover, 50px 50px, 50px 50px;
+            background-position: 0 0, 0 0, 0 0, 0 0;
             background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            padding: var(--spacing-lg);
+            align-items: center;
+            padding: var(--spacing-md);
             animation: fadeInBody 1s ease-out forwards;
         }
          @keyframes fadeInBody { from { opacity: 0; } to { opacity: 1; } }
 
-        .container {
+        .main-interface {
             width: 100%;
-            max-width: 1150px;
+            max-width: 1000px;
             background: var(--clr-panel-bg);
             border: 1px solid var(--clr-panel-border);
             border-radius: var(--radius);
-            box-shadow: 0 0 30px var(--clr-glow-accent), inset 0 0 20px rgba(161, 98, 247, 0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            display: grid;
-            grid-template-columns: 1fr;
-            overflow: hidden;
+            box-shadow: 0 0 35px rgba(161, 98, 247, 0.2), inset 0 0 15px rgba(12, 14, 25, 0.5);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: flex;
             position: relative;
+            overflow: hidden;
             animation: fadeInContainer 1s ease-out 0.2s forwards;
             opacity: 0;
-             margin-top: var(--spacing-md);
-             margin-bottom: var(--spacing-md);
         }
 
         @keyframes fadeInContainer {
-            from { opacity: 0; transform: scale(0.95) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        @media (min-width: 992px) {
-            .container {
-                grid-template-columns: 1fr 420px;
-            }
-        }
-
-        .content-panel {
+        .content-column {
+            flex-grow: 1;
             padding: var(--spacing-lg) var(--spacing-xl);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            min-height: 70vh;
+             border-right: 1px solid var(--clr-panel-border-secondary);
+             position: relative;
+             overflow-y: auto; /* Allows scrolling if content exceeds height */
+             max-height: 90vh; /* Limit height */
         }
 
-        .visual-panel {
+         /* Style the scrollbar */
+        .content-column::-webkit-scrollbar {
+            width: 6px;
+        }
+        .content-column::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .content-column::-webkit-scrollbar-thumb {
+            background-color: var(--clr-accent);
+            border-radius: 3px;
+            border: 1px solid var(--clr-panel-bg);
+        }
+        .content-column::-webkit-scrollbar-thumb:hover {
+             background-color: var(--clr-primary);
+        }
+
+
+        .visual-column {
+            width: 380px;
+            flex-shrink: 0;
             position: relative;
             overflow: hidden;
-            display: none;
-            align-items: flex-end;
-            justify-content: center;
-            border-left: 1px solid var(--clr-panel-border);
-            background: radial-gradient(circle at bottom right, rgba(255, 51, 168, 0.15), transparent 60%),
-                        radial-gradient(circle at top left, rgba(0, 224, 255, 0.1), transparent 50%),
-                        rgba(10, 12, 22, 0.5);
-        }
-
-        @media (min-width: 992px) {
-            .visual-panel {
-                display: flex;
-            }
-        }
-
-        .visual-panel img {
-            max-width: 115%;
-            height: auto;
-            object-fit: contain;
-            object-position: bottom center;
-            transform: translateY(10px) translateX(-15px);
-            filter: drop-shadow(0 0 18px var(--clr-glow-primary)) drop-shadow(0 0 12px var(--clr-glow-secondary));
-            animation: subtleBob 6s ease-in-out infinite alternate;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
-         @keyframes subtleBob {
-            from { transform: translateY(10px) translateX(-15px) scale(1); }
-            to { transform: translateY(-0px) translateX(-15px) scale(1.01); }
-        }
-
-        section {
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .section-header {
-            font-family: var(--font-ui);
-            font-size: 1rem;
-            color: var(--clr-accent);
-            margin-bottom: var(--spacing-md);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            background: linear-gradient(160deg, rgba(10, 10, 15, 0.5) 0%, rgba(20, 22, 36, 0.8) 100%);
             display: flex;
             align-items: center;
-            border-bottom: 1px dashed var(--clr-panel-border-alt);
-            padding-bottom: var(--spacing-sm);
+            justify-content: center;
         }
-        .section-header i {
-             margin-right: var(--spacing-md);
-             color: var(--clr-accent);
-             font-size: 1.1rem;
-             text-shadow: 0 0 8px var(--clr-glow-accent);
+
+        @media (max-width: 850px) {
+            .main-interface {
+                flex-direction: column;
+            }
+            .visual-column {
+                display: none; /* Hide visual column on smaller screens */
+            }
+             .content-column {
+                border-right: none;
+                 max-height: none; /* Remove height limit */
+             }
         }
-        .section-header.primary i { color: var(--clr-primary); text-shadow: 0 0 8px var(--clr-glow-primary); }
-        .section-header.secondary i { color: var(--clr-secondary); text-shadow: 0 0 8px var(--clr-glow-secondary); }
+
+        /* CSS-only Visual Representation in Visual Column */
+        .visual-column::before,
+        .visual-column::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.5;
+            filter: blur(60px);
+            z-index: 1;
+        }
+
+        .visual-column::before { /* Primary Glow (Pinkish) */
+            width: 250px;
+            height: 300px;
+            background: var(--clr-primary);
+            bottom: 5%;
+            right: -20%;
+            animation: pulseGlowPrimary 8s ease-in-out infinite alternate;
+        }
+
+        .visual-column::after { /* Secondary Glow (Cyan) */
+            width: 200px;
+            height: 250px;
+            background: var(--clr-secondary);
+            top: 10%;
+            right: 10%;
+            animation: pulseGlowSecondary 10s ease-in-out infinite alternate;
+        }
+
+        /* Abstract Shapes */
+        .shape-container {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+        }
+        .shape {
+            position: absolute;
+            background: linear-gradient(45deg, var(--clr-primary), var(--clr-secondary));
+            opacity: 0.1;
+            animation: floatShape 15s ease-in-out infinite alternate;
+        }
+        .shape1 {
+            width: 80px; height: 80px;
+            bottom: 20%; right: 30%;
+            border-radius: 50% 30% 40% 60%;
+            animation-delay: 0s;
+        }
+        .shape2 {
+            width: 120px; height: 60px;
+            top: 25%; right: 15%;
+            border-radius: 30% 70% 60% 40%;
+             filter: blur(5px);
+             animation-delay: -5s;
+        }
+         .shape3 {
+             width: 3px; height: 150px;
+             bottom: 10%; right: 50%;
+             background: var(--clr-secondary);
+             opacity: 0.4;
+              filter: blur(1px);
+             animation-delay: -2s;
+             transform-origin: bottom;
+        }
+
+        @keyframes pulseGlowPrimary {
+            from { transform: scale(0.9); opacity: 0.4; }
+            to { transform: scale(1.1); opacity: 0.6; }
+        }
+        @keyframes pulseGlowSecondary {
+            from { transform: scale(1.1); opacity: 0.6; }
+            to { transform: scale(0.9); opacity: 0.4; }
+        }
+        @keyframes floatShape {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(20deg); }
+            100% { transform: translateY(5px) rotate(-10deg); }
+        }
 
 
-        .user-id-zone {
+        /* Content Styling */
+        .header {
+            margin-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--clr-panel-border-secondary);
+            padding-bottom: var(--spacing-md);
+        }
+
+        .user-id {
             font-family: var(--font-ui);
             color: var(--clr-text-muted);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: var(--spacing-md);
-            border: 1px dashed var(--clr-panel-border);
-            padding: var(--spacing-sm) var(--spacing-md);
-            display: inline-block;
-            border-radius: 4px;
-            background: var(--clr-panel-bg-alt);
+            display: block;
+            position: relative;
+            padding-left: var(--spacing-md);
         }
-        .user-id-zone span {
-            color: var(--clr-primary);
+        .user-id::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background-color: var(--clr-secondary);
+            border-radius: 2px;
+             box-shadow: 0 0 8px var(--clr-glow-secondary);
+             animation: blinkStatus 1.5s infinite steps(1);
+        }
+        @keyframes blinkStatus { 50% { opacity: 0.3; } }
+
+        .user-id span {
+            color: var(--clr-text);
             font-weight: 600;
-            letter-spacing: 1px;
-            text-shadow: 0 0 5px var(--clr-glow-primary);
         }
 
         h1 {
-            font-family: var(--font-heading);
-            font-size: clamp(1.8rem, 5vw, 2.4rem);
-            color: var(--clr-text);
-            margin-bottom: var(--spacing-sm);
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 4vw, 2rem);
+            color: var(--clr-text-header);
+            margin-bottom: var(--spacing-xs);
             text-shadow: 0 0 10px var(--clr-glow-secondary);
+            letter-spacing: 1px;
             font-weight: 700;
         }
         h1 span {
-             color: var(--clr-primary);
-             text-shadow: 0 0 10px var(--clr-glow-primary);
+            color: var(--clr-primary);
+            text-shadow: 0 0 10px var(--clr-glow-primary);
         }
 
         .subtitle {
             font-family: var(--font-ui);
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--clr-text-muted);
             margin-bottom: var(--spacing-lg);
-            max-width: 60ch;
+            max-width: 55ch;
         }
 
-        .button-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: var(--spacing-md);
+        .button-panel {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
             margin-bottom: var(--spacing-xl);
+            width: 100%;
+            max-width: 300px;
         }
 
         .btn {
             font-family: var(--font-ui);
-            background: transparent;
-            border: 1px solid var(--clr-primary);
-            color: var(--clr-primary);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--clr-panel-border-secondary);
+            color: var(--clr-text-muted);
             padding: var(--spacing-sm) var(--spacing-md);
             border-radius: var(--radius);
             cursor: pointer;
-            text-align: center;
+            text-align: left;
             font-weight: 600;
             font-size: 0.9rem;
             transition: all var(--transition-speed) ease;
             position: relative;
             overflow: hidden;
             text-decoration: none;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
         }
-
         .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 51, 168, 0.3), transparent);
-            transition: left var(--transition-speed) ease-out;
-        }
-
-        .btn:hover {
-            background: rgba(255, 51, 168, 0.1);
-            color: #fff;
-            border-color: #fff;
-            box-shadow: 0 0 15px var(--clr-glow-primary);
-            transform: translateY(-2px);
-        }
-        .btn:hover::before {
-            left: 100%;
-        }
-        .btn:active {
-            transform: translateY(0px);
+             content: '';
+             position: absolute;
+             left: 0;
+             top: 0;
+             bottom: 0;
+             width: 3px;
+             background-color: var(--clr-primary);
+             transform: scaleY(0);
+             transform-origin: bottom;
+             transition: transform var(--transition-speed) ease;
              box-shadow: 0 0 8px var(--clr-glow-primary);
         }
 
-        .btn i {
-            margin-right: var(--spacing-sm);
-            font-size: 0.9em;
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.07);
+            color: var(--clr-text);
+            border-color: var(--clr-primary);
+            transform: translateX(5px);
+             box-shadow: 5px 0 15px -5px var(--clr-glow-primary);
+        }
+         .btn:hover::before {
+             transform: scaleY(1);
+        }
+        .btn:active {
+            transform: translateX(2px);
+            box-shadow: none;
         }
 
-        .btn.secondary { border-color: var(--clr-secondary); color: var(--clr-secondary); }
-        .btn.secondary:hover { background: rgba(0, 224, 255, 0.1); box-shadow: 0 0 15px var(--clr-glow-secondary); border-color: #fff; }
-        .btn.secondary::before { background: linear-gradient(90deg, transparent, rgba(0, 224, 255, 0.3), transparent); }
+         .btn i {
+            width: 18px; /* Fixed width for icon alignment */
+            text-align: center;
+            color: var(--clr-secondary);
+            transition: color var(--transition-speed) ease;
+         }
+         .btn:hover i {
+             color: var(--clr-primary);
+         }
+          .btn.accent i { color: var(--clr-accent); }
+          .btn.accent:hover i { color: var(--clr-primary); } /* Or keep accent color */
 
-        .btn.accent { border-color: var(--clr-accent); color: var(--clr-accent); }
-        .btn.accent:hover { background: rgba(161, 98, 247, 0.1); box-shadow: 0 0 15px var(--clr-glow-accent); border-color: #fff; }
-        .btn.accent::before { background: linear-gradient(90deg, transparent, rgba(161, 98, 247, 0.3), transparent); }
+
+        section {
+            margin-bottom: var(--spacing-xl);
+        }
+         section h2 {
+             font-family: var(--font-ui);
+             font-size: 1rem;
+             color: var(--clr-accent);
+             margin-bottom: var(--spacing-md);
+             text-transform: uppercase;
+             letter-spacing: 1.5px;
+             display: flex;
+             align-items: center;
+             border-bottom: 1px dotted var(--clr-panel-border-secondary);
+             padding-bottom: var(--spacing-xs);
+         }
+         section h2 i {
+             margin-right: var(--spacing-sm);
+             color: var(--clr-accent);
+             font-size: 1rem;
+             text-shadow: 0 0 6px var(--clr-glow-accent);
+         }
+          section h2.primary { color: var(--clr-primary); }
+          section h2.primary i { color: var(--clr-primary); text-shadow: 0 0 6px var(--clr-glow-primary); }
+          section h2.secondary { color: var(--clr-secondary); }
+          section h2.secondary i { color: var(--clr-secondary); text-shadow: 0 0 6px var(--clr-glow-secondary); }
 
 
-        .about-text {
-            font-family: var(--font-ui);
-            font-size: 1rem;
+        .content-block {
+            font-size: 0.95rem;
             color: var(--clr-text-muted);
-            background: var(--clr-panel-bg-alt);
+            background: rgba(0,0,0,0.1);
             padding: var(--spacing-md);
-            border-left: 3px solid var(--clr-secondary);
-            border-radius: 4px;
+            border-left: 2px solid var(--clr-secondary);
+            border-radius: 0 var(--radius) var(--radius) 0;
         }
-         .about-text strong {
+         .content-block strong {
              color: var(--clr-text);
              font-weight: 600;
          }
+          .content-block a {
+              color: var(--clr-primary);
+              text-decoration: none;
+              font-weight: 600;
+          }
+          .content-block a:hover {
+              text-decoration: underline;
+              text-shadow: 0 0 5px var(--clr-glow-primary);
+          }
 
-        .grid {
-            display: grid;
-            gap: var(--spacing-lg);
-        }
-        .grid-cols-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-        .grid-cols-2 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-
-
-        .service-card, .pricing-card, .project-card {
-            background: var(--clr-panel-bg-alt);
-            padding: var(--spacing-md);
-            border: 1px solid var(--clr-panel-border-alt);
-            border-radius: var(--radius);
-            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-        }
-         .service-card:hover, .pricing-card:hover, .project-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            border-color: var(--clr-secondary);
-        }
-
-         .service-card h3, .project-card h4 {
-            font-family: var(--font-heading);
-            color: var(--clr-text);
-            margin-bottom: var(--spacing-sm);
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-         }
-         .service-card h3 i, .project-card h4 i {
-             margin-right: var(--spacing-sm);
-             color: var(--clr-primary);
-             font-size: 1.1rem;
-             width: 20px;
-             text-align: center;
-         }
-          .service-card:nth-child(2) h3 i { color: var(--clr-secondary); }
-          .service-card:nth-child(3) h3 i { color: var(--clr-accent); }
-
-
-         .service-card p, .project-card p, .pricing-card p {
-            font-size: 0.95rem;
-            color: var(--clr-text-muted);
-             margin-bottom: 0;
-        }
-
-         .project-card h4 a {
-             color: var(--clr-primary);
-             text-decoration: none;
-         }
-         .project-card h4 a:hover {
-             text-decoration: underline;
-             text-shadow: 0 0 5px var(--clr-glow-primary);
-         }
-
-        .pricing-card { text-align: center; }
-        .pricing-card h3 {
-            font-family: var(--font-ui);
-            color: var(--clr-accent);
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-             margin-bottom: var(--spacing-md);
-        }
-         .pricing-card:nth-child(1) h3 { color: var(--clr-secondary); }
-         .pricing-card:nth-child(2) h3 { color: var(--clr-accent); }
-         .pricing-card:nth-child(3) h3 { color: var(--clr-primary); }
-
-        .pricing-card .price {
-            font-family: var(--font-heading);
-            font-size: 2.5rem;
-            color: var(--clr-secondary);
-            font-weight: 700;
-            margin-bottom: var(--spacing-sm);
-            text-shadow: 0 0 10px var(--clr-glow-secondary);
-        }
-         .pricing-card:nth-child(2) .price { color: var(--clr-accent); text-shadow: 0 0 10px var(--clr-glow-accent); }
-         .pricing-card:nth-child(3) .price { color: var(--clr-primary); text-shadow: 0 0 10px var(--clr-glow-primary); }
-
-
-        .contact-section {
-            text-align: center;
-        }
         .contact-grid {
-            display: inline-grid;
-            grid-template-columns: repeat(3, auto);
-            gap: var(--spacing-xl);
-            justify-content: center;
-            align-items: center;
-            margin-bottom: var(--spacing-lg);
+            display: flex;
+            gap: var(--spacing-lg);
+            justify-content: flex-start; /* Align left */
+            margin-top: var(--spacing-md);
         }
         .contact-link {
-            font-size: 2rem;
+            font-size: 1.6rem;
             color: var(--clr-text-muted);
-            transition: color var(--transition-speed) ease, transform var(--transition-speed) ease, text-shadow var(--transition-speed) ease;
+            transition: all var(--transition-speed) ease;
             position: relative;
+            display: block; /* Ensure tooltip positioning works */
         }
         .contact-link:hover {
-            transform: scale(1.2) rotate(-5deg);
+            transform: translateY(-3px) scale(1.1);
             color: var(--clr-secondary);
-            text-shadow: 0 0 12px var(--clr-glow-secondary);
+            text-shadow: 0 0 10px var(--clr-glow-secondary);
         }
         .contact-link::after {
             content: attr(data-tooltip);
             position: absolute;
-            bottom: 130%;
+            bottom: 115%;
             left: 50%;
             transform: translateX(-50%);
-            background-color: var(--clr-primary);
+            background-color: var(--clr-secondary);
             color: var(--clr-bg);
             padding: var(--spacing-xs) var(--spacing-sm);
-            border-radius: 4px;
-            font-size: 0.8rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
             font-family: var(--font-ui);
             white-space: nowrap;
             opacity: 0;
@@ -412,32 +442,25 @@
             opacity: 1;
             visibility: visible;
         }
-        .copy-button-wrapper {
-            margin-top: var(--spacing-md);
-        }
 
         footer {
-            margin-top: auto;
+            margin-top: var(--spacing-lg);
             padding-top: var(--spacing-md);
             border-top: 1px dashed var(--clr-panel-border);
         }
         .footer-text {
             font-family: var(--font-ui);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--clr-text-muted);
-            text-align: center;
+            text-align: left;
             opacity: 0.6;
-            text-shadow: 1px 1px 0 rgba(255, 51, 168, 0.3), -1px -1px 0 rgba(0, 224, 255, 0.3);
-            animation: glitchAnimFooter 7s infinite alternate steps(5, end);
+            text-shadow: 1px 1px 0 rgba(255, 51, 168, 0.1), -1px -1px 0 rgba(0, 224, 255, 0.1);
+            animation: glitchFooter 8s infinite steps(2, jump-none);
         }
-
-        @keyframes glitchAnimFooter {
-            0%, 100% { text-shadow: 1px 1px 0 rgba(255, 51, 168, 0.3), -1px -1px 0 rgba(0, 224, 255, 0.3); opacity: 0.6; }
-            20% { text-shadow: -1px 1px 0 rgba(255, 51, 168, 0.3), 1px -1px 0 rgba(0, 224, 255, 0.3); opacity: 0.55; }
-            40% { text-shadow: 1px -1px 0 rgba(255, 51, 168, 0.3), -1px 1px 0 rgba(0, 224, 255, 0.3); opacity: 0.65; }
-            60% { text-shadow: -1px -1px 0 rgba(255, 51, 168, 0.3), 1px 1px 0 rgba(0, 224, 255, 0.3); opacity: 0.6; }
-            80% { text-shadow: 1px 1px 0 rgba(255, 51, 168, 0.3), -1px -1px 0 rgba(0, 224, 255, 0.3); opacity: 0.5; }
-        }
+         @keyframes glitchFooter {
+             0%, 100% { opacity: 0.6; transform: translateX(0); }
+             50% { opacity: 0.55; transform: translateX(1px); }
+         }
 
         ::selection {
             background-color: var(--clr-primary);
@@ -454,106 +477,74 @@
 </head>
 <body>
 
-    <div class="container">
-        <div class="content-panel">
+    <div class="main-interface">
+        <div class="content-column">
             <div>
-                <section class="header-section">
-                    <div class="user-id-zone">
-                        Node Operator: <span>smsgetter</span>
+                <header class="header">
+                    <div class="user-id">
+                        Operator Status: <span>smsgetter [ONLINE]</span>
                     </div>
-                    <h1>Welcome to <span>SMSGetter</span> Interface</h1>
-                    <p class="subtitle">Autonomous digital access module. Focused on speed, privacy and bot integration.</p>
-                    <div class="button-grid">
-                        <a href="#services" class="btn"><i class="fas fa-cogs"></i> Core Services</a>
-                        <a href="#project" class="btn accent"><i class="fas fa-rocket"></i> Main Project</a>
-                        <a href="#contact" class="btn secondary"><i class="fas fa-plug"></i> Connect</a>
+                    <h1>SMSGetter <span>Node</span></h1>
+                    <p class="subtitle">Interface v3.0 // Autonomous Access & Intelligence Module</p>
+                    <div class="button-panel">
+                        <a href="#about" class="btn"><i class="fas fa-id-badge"></i> Operator Info</a>
+                        <a href="#project" class="btn accent"><i class="fas fa-rocket"></i> Featured Project</a>
+                        <a href="#contact" class="btn secondary"><i class="fas fa-network-wired"></i> Connection Hub</a>
+                        <button class="btn copy-key" id="copyKeyButton"><i class="fas fa-key"></i><span id="copyButtonText">Copy Access Key</span></button>
                     </div>
-                </section>
+                </header>
 
-                <section id="about">
-                    <h2 class="section-header"><i class="fas fa-user-secret"></i> Operator Bio: smsgetter</h2>
-                    <p class="about-text">
-                        <strong>smsgetter</strong> — это мой псевдоним и идентификатор разработчика. Я специализируюсь на создании эффективных IT-решений с упором на <strong>Telegram-ботов</strong>, современную <strong>веб-разработку</strong> и надежные приложения на <strong>Java</strong>. Моя цель — превращать идеи в работающий код, который решает задачи, автоматизирует процессы и приносит реальную пользу.
-                    </p>
-                </section>
+                <main>
+                    <section id="about">
+                        <h2 class="secondary"><i class="fas fa-info-circle"></i> About Operator // smsgetter</h2>
+                        <div class="content-block">
+                           Я, <strong>smsgetter</strong>, разработчик, сфокусированный на создании результативных IT-решений. Моя специализация — <strong>Telegram-боты</strong> (от простых до комплексных), современная <strong>веб-разработка</strong> (фронтенд/бэкенд, API) и надежные приложения на <strong>Java</strong>. Превращаю концепции в функциональный код для автоматизации и решения задач.
+                        </div>
+                    </section>
 
-                <section id="services">
-                    <h2 class="section-header primary"><i class="fas fa-terminal"></i> Core Services // Stack</h2>
-                    <div class="grid grid-cols-3">
-                        <div class="service-card">
-                            <h3><i class="fab fa-telegram-plane"></i> Telegram Bots</h3>
-                            <p>Разработка ботов любой сложности: уведомления, игры, платежи, API-интеграции, парсеры, админ-панели.</p>
+                    <section id="project">
+                        <h2 class="primary"><i class="fas fa-star"></i> Featured Project // CryptoWartov</h2>
+                         <div class="content-block">
+                            Мой основной проект — <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer">@cryptowartov_bot</a>. Это высокопроизводительный Telegram-бот, предназначенный для мониторинга и анализа чеков в крипто-сфере. Он отличается скоростью реакции и продвинутыми механизмами фильтрации данных.
+                            <br>
+                            <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="btn primary" style="margin-top: var(--spacing-md); border-color: var(--clr-primary); color: var(--clr-primary); max-width: 200px;">
+                                <i class="fab fa-telegram-plane"></i> Access Bot
+                            </a>
                         </div>
-                        <div class="service-card">
-                            <h3><i class="fas fa-code"></i> Web Development</h3>
-                            <p>Создание сайтов: лендинги, визитки, API. Бэкенд и фронтенд, адаптивный дизайн, фокус на производительности.</p>
-                        </div>
-                        <div class="service-card">
-                            <h3><i class="fab fa-java"></i> Java Solutions</h3>
-                            <p>Бэкенд-разработка на Java: серверы, утилиты, API, библиотеки. Надежность и масштабируемость.</p>
-                        </div>
-                    </div>
-                </section>
+                    </section>
 
-                <section id="project">
-                     <h2 class="section-header accent"><i class="fas fa-rocket"></i> Featured Project</h2>
-                     <div class="project-card">
-                        <h4><i class="fas fa-robot"></i><a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer">@cryptowartov_bot</a></h4>
-                         <p>Автономный Telegram-бот для мониторинга и анализа чеков от популярных крипто-ботов. Оптимизирован для высокой скорости реакции и точной фильтрации. Мой основной личный проект.</p>
-                         <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="btn accent" style="margin-top: var(--spacing-sm);"><i class="fab fa-telegram-plane"></i> Access Bot</a>
-                    </div>
-                </section>
-
-                <section id="pricing">
-                    <h2 class="section-header secondary"><i class="fas fa-dollar-sign"></i> Engagement Model</h2>
-                     <div class="grid grid-cols-3">
-                        <div class="pricing-card">
-                            <h3>// Tier 1: Microtask</h3>
-                            <div class="price">от 5$</div>
-                            <p>Правки, консультации, мини-скрипты, небольшие задачи.</p>
+                    <section id="contact">
+                        <h2 class="accent"><i class="fas fa-plug"></i> Connection Hub // Contact</h2>
+                        <div class="content-block">
+                            Для обсуждения проектов, сотрудничества или связи:
+                            <div class="contact-grid">
+                                <a href="https://t.me/smsgetter" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Telegram: @smsgetter">
+                                    <i class="fab fa-telegram-plane"></i>
+                                </a>
+                                <a href="#" class="contact-link" data-tooltip="Channel (N/A)" style="opacity: 0.4; cursor: default;">
+                                    <i class="fas fa-broadcast-tower"></i>
+                                </a>
+                                 <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Featured Bot">
+                                    <i class="fas fa-robot"></i>
+                                </a>
+                            </div>
+                            <p style="font-size: 0.85rem; margin-top: var(--spacing-md);">Оплата: Криптовалюты (USDT, etc.), Карта РФ, Telegram Stars.</p>
                         </div>
-                        <div class="pricing-card">
-                            <h3>// Tier 2: Standard Unit</h3>
-                            <div class="price">от 15$</div>
-                            <p>Бот/сайт/утилита под конкретную задачу по ТЗ.</p>
-                        </div>
-                        <div class="pricing-card">
-                            <h3>// Tier 3: Full Cycle</h3>
-                            <div class="price">от 30$</div>
-                            <p>Идея → Прототип → MVP → Запуск и поддержка.</p>
-                        </div>
-                    </div>
-                     <p style="text-align: center; margin-top: var(--spacing-md); color: var(--clr-text-muted); font-size: 0.9rem;">*Оплата: Криптовалюты (USDT etc.), Карта РФ, Telegram Stars.</p>
-                </section>
-
-                <section id="contact">
-                    <h2 class="section-header"><i class="fas fa-plug"></i> Access & Contact</h2>
-                    <div class="contact-grid">
-                        <a href="https://t.me/smsgetter" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Telegram: @smsgetter">
-                            <i class="fab fa-telegram-plane"></i>
-                        </a>
-                        <a href="#" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Channel (N/A)">
-                            <i class="fas fa-broadcast-tower" style="opacity: 0.5;"></i>
-                        </a>
-                         <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Main Bot: @cryptowartov_bot">
-                            <i class="fas fa-robot"></i>
-                        </a>
-                    </div>
-                     <div class="copy-button-wrapper" style="text-align: center;">
-                        <button class="btn secondary copy-key" id="copyKeyButton">
-                            <i class="fas fa-key"></i> <span id="copyButtonText">Copy Access Key</span>
-                        </button>
-                     </div>
-                </section>
+                    </section>
+                </main>
             </div>
 
             <footer>
-                <p class="footer-text">// Status: ONLINE // Node: SMSGETTER // Powered by WartovCrypto //</p>
+                <p class="footer-text">// INTERFACE v3.0 // NODE_ID: SMSGETTER // SYSTEM_STATUS: OPERATIONAL //</p>
             </footer>
         </div>
 
-        <div class="visual-panel">
-            <img src="placeholder-anime-girl.png" alt="Interface Assistant">
+        <div class="visual-column">
+           <div class="shape-container">
+                <div class="shape shape1"></div>
+                <div class="shape shape2"></div>
+                <div class="shape shape3"></div>
+           </div>
         </div>
     </div>
 
@@ -565,19 +556,23 @@
         copyButton.addEventListener('click', () => {
             if (isKeyCopied) return;
 
-            const accessKey = `SMSG_NODE_${Math.random().toString(36).slice(2, 10).toUpperCase()}_${Date.now().toString().slice(-4)}`;
+            const accessKey = `SMSG-INTF-${Math.random().toString(16).slice(2, 8).toUpperCase()}-${Date.now().toString().slice(-5)}`;
             navigator.clipboard.writeText(accessKey).then(() => {
                 isKeyCopied = true;
                 const originalText = copyButtonText.textContent;
-                copyButton.classList.remove('secondary');
-                copyButton.classList.add('accent');
+
+                copyButton.style.borderColor = 'var(--clr-secondary)';
+                copyButton.style.color = 'var(--clr-secondary)';
+                copyButton.querySelector('i').style.color = 'var(--clr-secondary)';
+                 copyButton.style.boxShadow = `0 0 15px var(--clr-glow-secondary)`;
                 copyButtonText.textContent = 'KEY COPIED!';
-                copyButton.style.boxShadow = `0 0 15px var(--clr-glow-accent)`;
+
 
                 setTimeout(() => {
                     copyButtonText.textContent = originalText;
-                    copyButton.classList.remove('accent');
-                    copyButton.classList.add('secondary');
+                     copyButton.style.borderColor = '';
+                     copyButton.style.color = '';
+                     copyButton.querySelector('i').style.color = '';
                      copyButton.style.boxShadow = '';
                     isKeyCopied = false;
                 }, 2500);
@@ -592,19 +587,21 @@
 
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                 e.preventDefault();
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
                 if(targetElement) {
-                    e.preventDefault();
-                     const offsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset - 40; // Adjust offset if needed
+                    const contentColumn = document.querySelector('.content-column');
+                    const offsetTop = targetElement.offsetTop - contentColumn.offsetTop - 20; // Adjust offset within scrollable container
 
-                    window.scrollTo({
+                    contentColumn.scrollTo({
                         top: offsetTop,
                         behavior: 'smooth'
                     });
                 }
             });
         });
+
     </script>
 
 </body>
