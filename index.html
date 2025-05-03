@@ -2,146 +2,418 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>smsgetter | Telegram & Web3 Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --clr-bg: #0f0f0f;
-      --clr-primary: #00ffd5;
-      --clr-secondary: #ff6ec7;
-      --clr-text: #f0f0f0;
-      --spacing: 1.5rem;
-      --radius: 1rem;
-      --shadow: rgba(0, 0, 0, 0.3);
+      --clr-bg: #0a0a0f;
+      --clr-bg-glass: rgba(15, 15, 25, 0.6);
+      --clr-primary: #00e0ff;
+      --clr-secondary: #ff61d9;
+      --clr-accent: #a45eff;
+      --clr-text: #e0e0e5;
+      --clr-text-muted: #a0a0a5;
+      --spacing: 1.8rem;
+      --radius: 12px;
+      --shadow-sm: rgba(0, 0, 0, 0.2);
+      --shadow-md: rgba(0, 0, 0, 0.4);
+      --shadow-lg: rgba(0, 0, 0, 0.6);
+      --transition-speed: 0.35s;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Inter', sans-serif;
       background: var(--clr-bg);
       color: var(--clr-text);
-      line-height: 1.6;
-      transition: all 0.3s ease;
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
-    a { color: var(--clr-primary); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+
+    h1, h2, h3 {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.3;
+      font-weight: 600;
+      color: var(--clr-text);
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing);
+      text-align: center;
+      color: var(--clr-primary);
+      text-shadow: 0 0 15px rgba(0, 224, 255, 0.3);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+      color: var(--clr-text);
+    }
+
+    p {
+      color: var(--clr-text-muted);
+      margin-bottom: 1rem;
+    }
+
+    a {
+      color: var(--clr-primary);
+      text-decoration: none;
+      transition: color var(--transition-speed) ease, text-shadow var(--transition-speed) ease;
+    }
+
+    a:hover {
+      color: var(--clr-secondary);
+      text-shadow: 0 0 8px var(--clr-secondary);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 var(--spacing);
+    }
+
+    section {
+      padding: calc(var(--spacing) * 3) 0;
+    }
+
     nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: var(--spacing);
-      background: rgba(0,0,0,0.7);
-      position: fixed; width: 100%; top: 0; z-index: 10;
+      padding: calc(var(--spacing) * 0.8) var(--spacing);
+      background: var(--clr-bg-glass);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 2px 10px var(--shadow-sm);
     }
+
+    .logo {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--clr-primary);
+      letter-spacing: 1px;
+    }
+    .logo:hover {
+      color: var(--clr-secondary);
+      text-shadow: 0 0 5px var(--clr-secondary);
+    }
+
     .nav-links {
       display: flex;
-      gap: var(--spacing);
+      gap: calc(var(--spacing) * 1.5);
     }
-    .nav-toggle { display: none; cursor: pointer; }
-    @media (max-width: 768px) {
-      .nav-links {
-        position: absolute; top: 100%; left: 0;
-        background: var(--clr-bg); width: 100%;
-        flex-direction: column; display: none;
-      }
-      .nav-links.show { display: flex; }
-      .nav-toggle { display: block; }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 0.5rem 0;
+      position: relative;
     }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--clr-secondary);
+      transition: width var(--transition-speed) ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-toggle {
+      display: none;
+      cursor: pointer;
+      font-size: 1.8rem;
+      color: var(--clr-text);
+      background: none;
+      border: none;
+    }
+
     .hero {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      height: 100vh;
+      min-height: 100vh;
       padding: var(--spacing);
-      background: linear-gradient(135deg, #001f3f, #003366);
-      box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(145deg, rgba(10, 10, 15, 0.8), rgba(0, 31, 63, 0.9)),
+                  radial-gradient(circle at top left, var(--clr-primary), transparent 60%),
+                  radial-gradient(circle at bottom right, var(--clr-secondary), transparent 50%),
+                  var(--clr-bg);
+      background-blend-mode: multiply, screen, screen, normal;
+      position: relative;
+      overflow: hidden;
     }
-    .hero a {
-      display: block;
-      width: 100%;
-      height: 100%;
-      text-decoration: none;
-      color: inherit;
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at center, rgba(10, 10, 15, 0) 0%, rgba(10, 10, 15, 1) 95%);
+      z-index: 1;
     }
+
+    .hero-content {
+      z-index: 2;
+      position: relative;
+      animation: fadeIn HeroAnimation 1s ease-out forwards;
+    }
+
+    @keyframes fadeInHeroAnimation {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .hero h1 {
-      font-size: 4rem;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 700;
       color: var(--clr-primary);
-      text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+      text-shadow: 0 0 20px rgba(0, 224, 255, 0.5), 0 0 30px rgba(0, 224, 255, 0.3);
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
     }
+
     .hero p {
-      font-size: 1.4rem;
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
       margin: var(--spacing) 0;
       color: var(--clr-text);
+      font-weight: 300;
+      max-width: 600px;
     }
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: var(--spacing);
+
+    .hero-cta {
+        display: inline-block;
+        margin-top: var(--spacing);
+        padding: 0.8rem 2rem;
+        background: linear-gradient(90deg, var(--clr-primary), var(--clr-secondary));
+        color: var(--clr-bg);
+        font-weight: 600;
+        border-radius: var(--radius);
+        transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+        box-shadow: 0 5px 15px rgba(0, 224, 255, 0.3);
+        font-family: 'Poppins', sans-serif;
     }
-    section {
-      margin-top: calc(100vh + var(--spacing));
+
+    .hero-cta:hover {
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0 8px 25px rgba(255, 97, 217, 0.5);
+        color: var(--clr-bg);
+        text-shadow: none;
     }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: calc(var(--spacing) * 1.2);
+      border-radius: var(--radius);
+      transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, background var(--transition-speed) ease;
+      box-shadow: 0 5px 15px var(--shadow-sm);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at top left, rgba(0, 224, 255, 0.05), transparent 70%);
+      opacity: 0;
+      transition: opacity var(--transition-speed) ease;
+      z-index: 0;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 30px var(--shadow-md);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card > * {
+      position: relative;
+      z-index: 1;
+    }
+
     .services {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: var(--spacing);
     }
-    .service-card {
-      background: rgba(255,255,255,0.1);
-      padding: var(--spacing);
-      border-radius: var(--radius);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0px 5px 15px var(--shadow);
+
+    .service-card h3 {
+        color: var(--clr-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
     }
-    .service-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0px 20px 30px var(--shadow);
+
+    .service-card h3::before {
+        content: '⚡';
+        display: inline-block;
+        font-size: 1.2em;
+        line-height: 1;
     }
+    .service-card:nth-child(2) h3::before { content: '⚙️'; }
+    .service-card:nth-child(3) h3::before { content: '💎'; }
+    .service-card:nth-child(4) h3::before { content: '☕'; }
+
+
     .pricing {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: var(--spacing);
       margin-top: var(--spacing);
     }
+
     .pricing-card {
-      background: rgba(255,255,255,0.1);
-      padding: var(--spacing);
-      border-radius: var(--radius);
       text-align: center;
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
-      box-shadow: 0px 5px 15px var(--shadow);
+      border-top: 4px solid var(--clr-primary);
     }
+    .pricing-card:nth-child(2) { border-top-color: var(--clr-accent); }
+    .pricing-card:nth-child(3) { border-top-color: var(--clr-secondary); }
+
     .pricing-card:hover {
-      box-shadow: 0px 20px 30px var(--clr-secondary);
-      transform: translateY(-10px);
+      border-top-width: 6px;
     }
+
     .pricing-card h3 {
       margin-bottom: 0.5em;
-      color: var(--clr-primary);
-      font-size: 1.6rem;
+      color: var(--clr-text);
+      font-size: 1.4rem;
+      font-weight: 500;
     }
+
     .pricing-card .price {
-      font-size: 2.5rem;
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.8rem;
       color: var(--clr-primary);
-      font-weight: bold;
+      font-weight: 700;
       margin-bottom: 1rem;
+      text-shadow: 0 0 10px rgba(0, 224, 255, 0.4);
     }
+    .pricing-card:nth-child(2) .price { color: var(--clr-accent); text-shadow: 0 0 10px rgba(164, 94, 255, 0.4); }
+    .pricing-card:nth-child(3) .price { color: var(--clr-secondary); text-shadow: 0 0 10px rgba(255, 97, 217, 0.4); }
+
+
+    .pricing-card p {
+        font-size: 0.95rem;
+    }
+
+    #contact {
+      text-align: center;
+    }
+
+    #contact p {
+        font-size: 1.1rem;
+        color: var(--clr-text);
+    }
+
+    #contact a {
+        font-weight: 600;
+    }
+
+
     footer {
       text-align: center;
       padding: var(--spacing);
-      opacity: 0.7;
+      margin-top: calc(var(--spacing) * 2);
+      opacity: 0.6;
       font-size: 0.9rem;
-      background: rgba(0, 0, 0, 0.7);
-      color: var(--clr-text);
+      background: rgba(10, 10, 15, 0.5);
+      color: var(--clr-text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
+
+    @media (max-width: 768px) {
+      h2 { font-size: 2rem; }
+      .hero h1 { font-size: clamp(2.5rem, 10vw, 4rem); }
+      .hero p { font-size: clamp(1rem, 4vw, 1.2rem); }
+
+      .nav-toggle {
+        display: block;
+        z-index: 1001;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--clr-bg);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: calc(var(--spacing) * 2);
+        transform: translateX(100%);
+        transition: transform var(--transition-speed) ease-in-out;
+        visibility: hidden;
+      }
+
+      .nav-links.show {
+        transform: translateX(0);
+        visibility: visible;
+      }
+
+      .nav-links a {
+        font-size: 1.5rem;
+      }
+      .nav-links a::after { display: none; }
+    }
+
+    /* Subtle reveal animation on scroll */
+    .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
   </style>
 </head>
 <body>
 
   <nav>
     <a href="#" class="logo">smsgetter</a>
-    <div class="nav-toggle">☰</div>
+    <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
     <div class="nav-links">
       <a href="#services">Услуги</a>
       <a href="#pricing">Цены</a>
@@ -150,68 +422,100 @@
   </nav>
 
   <div class="hero">
-    <a href="https://t.me/smsgetter">
+    <div class="hero-content">
       <h1>smsgetter</h1>
-      <p>Telegram‑боты • Web3 • Java‑решения</p>
-    </a>
+      <p>Современные Telegram‑боты • Интеграции Web3 • Производительные Java‑решения</p>
+      <a href="#contact" class="hero-cta">Связаться</a>
+    </div>
   </div>
 
-  <section id="services" class="container">
-    <h2>Чем занимаюсь</h2>
-    <div class="services">
-      <div class="service-card">
-        <h3>Telegram‑боты</h3>
-        <p>Уведомления, игры, платежи и многое другое.</p>
+  <main>
+    <section id="services" class="container reveal">
+      <h2>Чем занимаюсь</h2>
+      <div class="services">
+        <div class="service-card card">
+          <h3>Telegram‑боты</h3>
+          <p>Разработка ботов любой сложности: от простых уведомлений до игровых платформ и систем с интеграцией платежей.</p>
+        </div>
+        <div class="service-card card">
+          <h3>Софт для Telegram</h3>
+          <p>Создание кастомных панелей управления, админ-ботов, парсеров и других утилит для автоматизации работы в Telegram.</p>
+        </div>
+        <div class="service-card card">
+          <h3>Web3‑решения</h3>
+          <p>Разработка децентрализованных приложений (DApp), смарт-контрактов (Solidity), NFT-проектов и интеграция с блокчейнами.</p>
+        </div>
+        <div class="service-card card">
+          <h3>Java‑разработка</h3>
+          <p>Бэкенд-разработка на Java: создание высоконагруженных серверов, API, микросервисов и кастомных библиотек.</p>
+        </div>
       </div>
-      <div class="service-card">
-        <h3>Софт для Telegram</h3>
-        <p>Панели, админ‑боты, кастом‑утилиты.</p>
-      </div>
-      <div class="service-card">
-        <h3>Web3‑решения</h3>
-        <p>DApp, смарт‑контракты, NFT‑проекты.</p>
-      </div>
-      <div class="service-card">
-        <h3>Java‑разработка</h3>
-        <p>Серверы, утилиты, API и библиотеки.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="pricing" class="container">
-    <h2>Цены</h2>
-    <div class="pricing">
-      <div class="pricing-card">
-        <h3>Минимум</h3>
-        <div class="price">от 5 $</div>
-        <p>Правки, мини‑боты и небольшие проекты.</p>
+    <section id="pricing" class="container reveal">
+      <h2>Цены</h2>
+      <div class="pricing">
+        <div class="pricing-card card">
+          <h3>Минимум</h3>
+          <div class="price">от 5 $</div>
+          <p>Небольшие правки, консультации, разработка простых скриптов или мини-ботов.</p>
+        </div>
+        <div class="pricing-card card">
+          <h3>Проект</h3>
+          <div class="price">от 15 $</div>
+          <p>Разработка стандартного Telegram-бота или утилиты под конкретную задачу. Индивидуальный подход.</p>
+        </div>
+        <div class="pricing-card card">
+          <h3>Полный цикл</h3>
+          <div class="price">от 30 $</div>
+          <p>Комплексная разработка проекта: от идеи и ТЗ до MVP, запуска и поддержки.</p>
+        </div>
       </div>
-      <div class="pricing-card">
-        <h3>Проект</h3>
-        <div class="price">от 15 $</div>
-        <p>Бот или утилита под задачу. Индивидуальные решения.</p>
-      </div>
-      <div class="pricing-card">
-        <h3>Полный цикл</h3>
-        <div class="price">от 30 $</div>
-        <p>Идея → MVP → запуск. Все этапы разработки.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="contact" class="container">
-    <h2>Контакт</h2>
-    <p>Напиши в Telegram: <a href="https://t.me/smsgetter">@smsgetter</a></p>
-    <p>Оплата: крипта, карта РФ, Telegram Stars</p>
-  </section>
+    <section id="contact" class="container reveal">
+      <h2>Контакт</h2>
+      <p>Готов обсудить ваш проект. Напишите мне в Telegram:</p>
+      <p><a href="https://t.me/smsgetter">@smsgetter</a></p>
+      <p style="margin-top: var(--spacing); font-size: 0.95rem; color: var(--clr-text-muted);">Оплата: Криптовалюты (USDT, BTC, ETH и др.), Карта РФ, Telegram Stars</p>
+    </section>
+  </main>
 
-  <footer>© smsgetter, 2025</footer>
+  <footer>© smsgetter</footer>
 
   <script>
-    document.querySelector('.nav-toggle')
-      .addEventListener('click', () => {
-        document.querySelector('.nav-links').classList.toggle('show');
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    navToggle.addEventListener('click', () => {
+      const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+      navToggle.setAttribute('aria-expanded', !isExpanded);
+      navLinks.classList.toggle('show');
+      navToggle.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (navLinks.classList.contains('show')) {
+          navLinks.classList.remove('show');
+          navToggle.setAttribute('aria-expanded', 'false');
+          navToggle.textContent = '☰';
+        }
       });
+    });
+
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
   </script>
 
 </body>
