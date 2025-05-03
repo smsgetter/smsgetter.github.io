@@ -3,36 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMSGetter // Bio Access Node</title>
+    <title>SMSGetter // Bio Access Node v2.2</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --clr-bg: #0a0a0f; /* Deep Black */
-            --clr-panel-bg: rgba(20, 22, 36, 0.7); /* Dark Transparent Panel */
-            --clr-panel-border: rgba(161, 98, 247, 0.3); /* Purple Neon Border */
-            --clr-primary: #ff33a8; /* Hot Pink/Magenta Neon */
-            --clr-secondary: #00e0ff; /* Cyan Neon */
-            --clr-accent: #a162f7; /* Purple Neon */
-            --clr-text: #e0e0e5;
-            --clr-text-muted: #a0a5c0;
-            --clr-text-ui: #00e0ff; /* Cyan for UI Text */
-
-            --clr-glow-primary: rgba(255, 51, 168, 0.5);
-            --clr-glow-secondary: rgba(0, 224, 255, 0.5);
-            --clr-glow-accent: rgba(161, 98, 247, 0.5);
-
+            --clr-bg: #05060a;
+            --clr-panel-bg: rgba(18, 20, 35, 0.8);
+            --clr-panel-bg-alt: rgba(10, 12, 22, 0.7);
+            --clr-panel-border: rgba(161, 98, 247, 0.35);
+            --clr-panel-border-alt: rgba(0, 224, 255, 0.25);
+            --clr-primary: #ff33a8;
+            --clr-secondary: #00e0ff;
+            --clr-accent: #a162f7;
+            --clr-text: #dde1f0;
+            --clr-text-muted: #9aa0b8;
+            --clr-text-ui: #00e0ff;
+            --clr-glow-primary: rgba(255, 51, 168, 0.6);
+            --clr-glow-secondary: rgba(0, 224, 255, 0.6);
+            --clr-glow-accent: rgba(161, 98, 247, 0.6);
             --font-heading: 'Poppins', sans-serif;
             --font-ui: 'Source Code Pro', monospace;
-
-            --radius: 8px;
+            --radius: 6px;
+            --spacing-xs: 0.5rem;
             --spacing-sm: 0.8rem;
             --spacing-md: 1.5rem;
             --spacing-lg: 2rem;
-            --spacing-xl: 3rem;
+            --spacing-xl: 2.5rem;
             --transition-speed: 0.3s;
         }
 
@@ -44,45 +44,50 @@
 
         html {
             scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
             font-family: var(--font-ui);
             background-color: var(--clr-bg);
             color: var(--clr-text);
-            line-height: 1.7;
+            line-height: 1.6;
             overflow-x: hidden;
-            background-image:
-                /* Grid */
-                linear-gradient(rgba(0, 224, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 224, 255, 0.05) 1px, transparent 1px),
-                /* Noise */
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            background-size: 30px 30px, 30px 30px, cover;
-            background-position: 0 0, 0 0, 0 0;
-            background-blend-mode: normal, normal, overlay;
-            opacity: 0.9;
+            background:
+                radial-gradient(ellipse at 80% 20%, rgba(255, 51, 168, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(0, 224, 255, 0.1) 0%, transparent 50%),
+                linear-gradient(rgba(0, 224, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(161, 98, 247, 0.03) 1px, transparent 1px),
+                var(--clr-bg);
+            background-size: cover, cover, 40px 40px, 40px 40px, cover;
+            background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: var(--spacing-md);
+            align-items: flex-start;
+            padding: var(--spacing-lg);
+            animation: fadeInBody 1s ease-out forwards;
         }
+         @keyframes fadeInBody { from { opacity: 0; } to { opacity: 1; } }
 
         .container {
             width: 100%;
-            max-width: 1000px; /* Adjust max-width as needed */
+            max-width: 1150px;
             background: var(--clr-panel-bg);
             border: 1px solid var(--clr-panel-border);
             border-radius: var(--radius);
-            box-shadow: 0 0 25px var(--clr-glow-accent), inset 0 0 15px rgba(161, 98, 247, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px var(--clr-glow-accent), inset 0 0 20px rgba(161, 98, 247, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             display: grid;
-            grid-template-columns: 1fr; /* Default single column */
-            overflow: hidden; /* Ensure content stays within rounded corners */
+            grid-template-columns: 1fr;
+            overflow: hidden;
             position: relative;
-             animation: fadeInContainer 1s ease-out forwards;
+            animation: fadeInContainer 1s ease-out 0.2s forwards;
+            opacity: 0;
+             margin-top: var(--spacing-md);
+             margin-bottom: var(--spacing-md);
         }
 
         @keyframes fadeInContainer {
@@ -90,11 +95,9 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Grid layout for larger screens */
-        @media (min-width: 768px) {
+        @media (min-width: 992px) {
             .container {
-                grid-template-columns: 1fr 40%; /* Left content, Right visual */
-                max-height: 80vh; /* Limit height on desktop */
+                grid-template-columns: 1fr 420px;
             }
         }
 
@@ -102,44 +105,69 @@
             padding: var(--spacing-lg) var(--spacing-xl);
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Pushes footer down */
-            min-height: 60vh; /* Ensure minimum height */
+            justify-content: space-between;
+            min-height: 70vh;
         }
 
         .visual-panel {
             position: relative;
             overflow: hidden;
-            display: none; /* Hidden by default on mobile */
-            align-items: flex-end; /* Align image to bottom */
+            display: none;
+            align-items: flex-end;
             justify-content: center;
-             border-left: 1px solid var(--clr-panel-border);
+            border-left: 1px solid var(--clr-panel-border);
+            background: radial-gradient(circle at bottom right, rgba(255, 51, 168, 0.15), transparent 60%),
+                        radial-gradient(circle at top left, rgba(0, 224, 255, 0.1), transparent 50%),
+                        rgba(10, 12, 22, 0.5);
         }
 
-        @media (min-width: 768px) {
+        @media (min-width: 992px) {
             .visual-panel {
                 display: flex;
             }
         }
 
         .visual-panel img {
-            max-width: 110%; /* Allow slight overflow for effect */
+            max-width: 115%;
             height: auto;
             object-fit: contain;
             object-position: bottom center;
-            transform: translateY(5px) translateX(-10px); /* Adjust positioning */
-            filter: drop-shadow(0 0 15px var(--clr-glow-primary)) drop-shadow(0 0 10px var(--clr-glow-secondary));
-             animation: subtleBob 5s ease-in-out infinite alternate;
+            transform: translateY(10px) translateX(-15px);
+            filter: drop-shadow(0 0 18px var(--clr-glow-primary)) drop-shadow(0 0 12px var(--clr-glow-secondary));
+            animation: subtleBob 6s ease-in-out infinite alternate;
+            user-select: none;
+            -webkit-user-drag: none;
         }
          @keyframes subtleBob {
-            from { transform: translateY(5px) translateX(-10px); }
-            to { transform: translateY(-5px) translateX(-10px); }
+            from { transform: translateY(10px) translateX(-15px) scale(1); }
+            to { transform: translateY(-0px) translateX(-15px) scale(1.01); }
         }
 
-
-        /* --- Hero Elements --- */
-        .header-section {
+        section {
             margin-bottom: var(--spacing-xl);
         }
+
+        .section-header {
+            font-family: var(--font-ui);
+            font-size: 1rem;
+            color: var(--clr-accent);
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px dashed var(--clr-panel-border-alt);
+            padding-bottom: var(--spacing-sm);
+        }
+        .section-header i {
+             margin-right: var(--spacing-md);
+             color: var(--clr-accent);
+             font-size: 1.1rem;
+             text-shadow: 0 0 8px var(--clr-glow-accent);
+        }
+        .section-header.primary i { color: var(--clr-primary); text-shadow: 0 0 8px var(--clr-glow-primary); }
+        .section-header.secondary i { color: var(--clr-secondary); text-shadow: 0 0 8px var(--clr-glow-secondary); }
+
 
         .user-id-zone {
             font-family: var(--font-ui);
@@ -147,24 +175,29 @@
             font-size: 0.9rem;
             margin-bottom: var(--spacing-md);
             border: 1px dashed var(--clr-panel-border);
-            padding: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
             display: inline-block;
             border-radius: 4px;
-            background: rgba(0,0,0,0.2);
+            background: var(--clr-panel-bg-alt);
         }
         .user-id-zone span {
             color: var(--clr-primary);
             font-weight: 600;
             letter-spacing: 1px;
-             text-shadow: 0 0 5px var(--clr-glow-primary);
+            text-shadow: 0 0 5px var(--clr-glow-primary);
         }
 
         h1 {
             font-family: var(--font-heading);
-            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-size: clamp(1.8rem, 5vw, 2.4rem);
             color: var(--clr-text);
             margin-bottom: var(--spacing-sm);
-             text-shadow: 0 0 8px var(--clr-glow-secondary);
+            text-shadow: 0 0 10px var(--clr-glow-secondary);
+            font-weight: 700;
+        }
+        h1 span {
+             color: var(--clr-primary);
+             text-shadow: 0 0 10px var(--clr-glow-primary);
         }
 
         .subtitle {
@@ -172,11 +205,12 @@
             font-size: 1rem;
             color: var(--clr-text-muted);
             margin-bottom: var(--spacing-lg);
+            max-width: 60ch;
         }
 
         .button-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: var(--spacing-md);
             margin-bottom: var(--spacing-xl);
         }
@@ -195,11 +229,11 @@
             transition: all var(--transition-speed) ease;
             position: relative;
             overflow: hidden;
-            text-decoration: none; /* For <a> styled as button */
-            display: inline-block; /* For <a> */
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .btn::before { /* Shine effect on hover */
+        .btn::before {
             content: '';
             position: absolute;
             top: 0;
@@ -220,12 +254,16 @@
         .btn:hover::before {
             left: 100%;
         }
+        .btn:active {
+            transform: translateY(0px);
+             box-shadow: 0 0 8px var(--clr-glow-primary);
+        }
 
         .btn i {
             margin-right: var(--spacing-sm);
+            font-size: 0.9em;
         }
 
-        /* Specific Button Colors */
         .btn.secondary { border-color: var(--clr-secondary); color: var(--clr-secondary); }
         .btn.secondary:hover { background: rgba(0, 224, 255, 0.1); box-shadow: 0 0 15px var(--clr-glow-secondary); border-color: #fff; }
         .btn.secondary::before { background: linear-gradient(90deg, transparent, rgba(0, 224, 255, 0.3), transparent); }
@@ -235,108 +273,131 @@
         .btn.accent::before { background: linear-gradient(90deg, transparent, rgba(161, 98, 247, 0.3), transparent); }
 
 
-        /* --- About Section --- */
-        .about-section {
-             margin-bottom: var(--spacing-xl);
-        }
-        .about-section h2 {
-            font-family: var(--font-ui);
-            font-size: 1.1rem;
-            color: var(--clr-accent);
-            margin-bottom: var(--spacing-sm);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-        }
-        .about-section h2 i {
-             margin-right: var(--spacing-sm);
-             color: var(--clr-accent);
-        }
-        .about-section p {
+        .about-text {
             font-family: var(--font-ui);
             font-size: 1rem;
             color: var(--clr-text-muted);
-            background: rgba(0,0,0,0.2);
+            background: var(--clr-panel-bg-alt);
             padding: var(--spacing-md);
             border-left: 3px solid var(--clr-secondary);
             border-radius: 4px;
         }
+         .about-text strong {
+             color: var(--clr-text);
+             font-weight: 600;
+         }
 
-        /* --- Project Highlight --- */
-        .project-section {
-             margin-bottom: var(--spacing-xl);
+        .grid {
+            display: grid;
+            gap: var(--spacing-lg);
         }
-         .project-section h2 {
-            font-family: var(--font-ui);
-            font-size: 1.1rem;
-            color: var(--clr-primary);
-            margin-bottom: var(--spacing-sm);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
+        .grid-cols-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+
+
+        .service-card, .pricing-card, .project-card {
+            background: var(--clr-panel-bg-alt);
+            padding: var(--spacing-md);
+            border: 1px solid var(--clr-panel-border-alt);
+            border-radius: var(--radius);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
         }
-        .project-section h2 i {
-             margin-right: var(--spacing-sm);
-             color: var(--clr-primary);
+         .service-card:hover, .pricing-card:hover, .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            border-color: var(--clr-secondary);
         }
-         .project-card {
-             background: rgba(0,0,0,0.2);
-             padding: var(--spacing-md);
-             border: 1px solid rgba(255, 51, 168, 0.2);
-             border-radius: var(--radius);
-        }
-         .project-card h4 {
+
+         .service-card h3, .project-card h4 {
             font-family: var(--font-heading);
-            font-size: 1.3rem;
             color: var(--clr-text);
             margin-bottom: var(--spacing-sm);
-        }
-        .project-card p {
-             font-family: var(--font-ui);
-            font-size: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+         }
+         .service-card h3 i, .project-card h4 i {
+             margin-right: var(--spacing-sm);
+             color: var(--clr-primary);
+             font-size: 1.1rem;
+             width: 20px;
+             text-align: center;
+         }
+          .service-card:nth-child(2) h3 i { color: var(--clr-secondary); }
+          .service-card:nth-child(3) h3 i { color: var(--clr-accent); }
+
+
+         .service-card p, .project-card p, .pricing-card p {
+            font-size: 0.95rem;
             color: var(--clr-text-muted);
-            margin-bottom: var(--spacing-md);
-        }
-        .project-card .btn {
-            margin-top: var(--spacing-sm);
+             margin-bottom: 0;
         }
 
-        /* --- Contacts / Links --- */
+         .project-card h4 a {
+             color: var(--clr-primary);
+             text-decoration: none;
+         }
+         .project-card h4 a:hover {
+             text-decoration: underline;
+             text-shadow: 0 0 5px var(--clr-glow-primary);
+         }
+
+        .pricing-card { text-align: center; }
+        .pricing-card h3 {
+            font-family: var(--font-ui);
+            color: var(--clr-accent);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+             margin-bottom: var(--spacing-md);
+        }
+         .pricing-card:nth-child(1) h3 { color: var(--clr-secondary); }
+         .pricing-card:nth-child(2) h3 { color: var(--clr-accent); }
+         .pricing-card:nth-child(3) h3 { color: var(--clr-primary); }
+
+        .pricing-card .price {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--clr-secondary);
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            text-shadow: 0 0 10px var(--clr-glow-secondary);
+        }
+         .pricing-card:nth-child(2) .price { color: var(--clr-accent); text-shadow: 0 0 10px var(--clr-glow-accent); }
+         .pricing-card:nth-child(3) .price { color: var(--clr-primary); text-shadow: 0 0 10px var(--clr-glow-primary); }
+
+
         .contact-section {
-            margin-bottom: var(--spacing-xl);
-            text-align: center; /* Center the grid */
+            text-align: center;
         }
         .contact-grid {
-            display: inline-grid; /* Make grid only as wide as content */
-            grid-template-columns: repeat(3, auto); /* Adjust columns based on content */
-            gap: var(--spacing-lg);
+            display: inline-grid;
+            grid-template-columns: repeat(3, auto);
+            gap: var(--spacing-xl);
             justify-content: center;
-            align-items: center; /* Vertically align items */
-             margin-bottom: var(--spacing-lg);
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
         }
         .contact-link {
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: var(--clr-text-muted);
             transition: color var(--transition-speed) ease, transform var(--transition-speed) ease, text-shadow var(--transition-speed) ease;
             position: relative;
         }
         .contact-link:hover {
-            transform: scale(1.2);
+            transform: scale(1.2) rotate(-5deg);
             color: var(--clr-secondary);
-            text-shadow: 0 0 10px var(--clr-glow-secondary);
+            text-shadow: 0 0 12px var(--clr-glow-secondary);
         }
-        /* Tooltip on hover */
         .contact-link::after {
             content: attr(data-tooltip);
             position: absolute;
-            bottom: 120%;
+            bottom: 130%;
             left: 50%;
             transform: translateX(-50%);
             background-color: var(--clr-primary);
             color: var(--clr-bg);
-            padding: var(--spacing-sm) var(--spacing-md);
+            padding: var(--spacing-xs) var(--spacing-sm);
             border-radius: 4px;
             font-size: 0.8rem;
             font-family: var(--font-ui);
@@ -355,10 +416,8 @@
             margin-top: var(--spacing-md);
         }
 
-
-        /* --- Footer --- */
         footer {
-            margin-top: auto; /* Push footer to bottom */
+            margin-top: auto;
             padding-top: var(--spacing-md);
             border-top: 1px dashed var(--clr-panel-border);
         }
@@ -367,20 +426,29 @@
             font-size: 0.8rem;
             color: var(--clr-text-muted);
             text-align: center;
-            opacity: 0.7;
-            /* Basic Glitch Styling */
-            text-shadow: 1px 1px 0 rgba(255, 51, 168, 0.5), -1px -1px 0 rgba(0, 224, 255, 0.5);
-             animation: glitchAnim 5s infinite alternate steps(4, end);
+            opacity: 0.6;
+            text-shadow: 1px 1px 0 rgba(255, 51, 168, 0.3), -1px -1px 0 rgba(0, 224, 255, 0.3);
+            animation: glitchAnimFooter 7s infinite alternate steps(5, end);
         }
 
-        @keyframes glitchAnim {
-            0% { text-shadow: 1px 1px 0 rgba(255, 51, 168, 0.5), -1px -1px 0 rgba(0, 224, 255, 0.5); }
-            25% { text-shadow: -1px 1px 0 rgba(255, 51, 168, 0.5), 1px -1px 0 rgba(0, 224, 255, 0.5); }
-            50% { text-shadow: 1px -1px 0 rgba(255, 51, 168, 0.5), -1px 1px 0 rgba(0, 224, 255, 0.5); }
-            75% { text-shadow: -1px -1px 0 rgba(255, 51, 168, 0.5), 1px 1px 0 rgba(0, 224, 255, 0.5); }
-            100% { text-shadow: 1px 1px 0 rgba(255, 51, 168, 0.5), -1px -1px 0 rgba(0, 224, 255, 0.5); }
+        @keyframes glitchAnimFooter {
+            0%, 100% { text-shadow: 1px 1px 0 rgba(255, 51, 168, 0.3), -1px -1px 0 rgba(0, 224, 255, 0.3); opacity: 0.6; }
+            20% { text-shadow: -1px 1px 0 rgba(255, 51, 168, 0.3), 1px -1px 0 rgba(0, 224, 255, 0.3); opacity: 0.55; }
+            40% { text-shadow: 1px -1px 0 rgba(255, 51, 168, 0.3), -1px 1px 0 rgba(0, 224, 255, 0.3); opacity: 0.65; }
+            60% { text-shadow: -1px -1px 0 rgba(255, 51, 168, 0.3), 1px 1px 0 rgba(0, 224, 255, 0.3); opacity: 0.6; }
+            80% { text-shadow: 1px 1px 0 rgba(255, 51, 168, 0.3), -1px -1px 0 rgba(0, 224, 255, 0.3); opacity: 0.5; }
         }
 
+        ::selection {
+            background-color: var(--clr-primary);
+            color: var(--clr-bg);
+            text-shadow: none;
+        }
+        ::-moz-selection {
+            background-color: var(--clr-primary);
+            color: var(--clr-bg);
+            text-shadow: none;
+        }
 
     </style>
 </head>
@@ -388,96 +456,153 @@
 
     <div class="container">
         <div class="content-panel">
-            <div> <!-- Wrapper for content above footer -->
+            <div>
                 <section class="header-section">
                     <div class="user-id-zone">
-                        User ID: <span>777777</span>
+                        Node Operator: <span>smsgetter</span>
                     </div>
-                    <h1>Welcome to SMSGetter</h1>
-                    <p class="subtitle">Elite Access. Structured Intelligence.</p>
+                    <h1>Welcome to <span>SMSGetter</span> Interface</h1>
+                    <p class="subtitle">Autonomous digital access module. Focused on speed, privacy and bot integration.</p>
                     <div class="button-grid">
-                        <button class="btn"><i class="fas fa-tools"></i> Access Tools</button>
-                        <button class="btn secondary"><i class="fas fa-book"></i> Setup Manuals</button>
-                        <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="btn accent"><i class="fas fa-robot"></i> CryptoWartov Bot</a>
-                        <!-- Removed "Buy Access" -->
+                        <a href="#services" class="btn"><i class="fas fa-cogs"></i> Core Services</a>
+                        <a href="#project" class="btn accent"><i class="fas fa-rocket"></i> Main Project</a>
+                        <a href="#contact" class="btn secondary"><i class="fas fa-plug"></i> Connect</a>
                     </div>
                 </section>
 
-                <section class="about-section">
-                    <h2><i class="fas fa-info-circle"></i> About SMSGetter</h2>
-                    <p>
-                        SMSGetter — это автономный цифровой модуль доступа к уведомлениям и структурам. Сфокусирован на скорости, приватности и бот-интеграции.
+                <section id="about">
+                    <h2 class="section-header"><i class="fas fa-user-secret"></i> Operator Bio: smsgetter</h2>
+                    <p class="about-text">
+                        <strong>smsgetter</strong> — это мой псевдоним и идентификатор разработчика. Я специализируюсь на создании эффективных IT-решений с упором на <strong>Telegram-ботов</strong>, современную <strong>веб-разработку</strong> и надежные приложения на <strong>Java</strong>. Моя цель — превращать идеи в работающий код, который решает задачи, автоматизирует процессы и приносит реальную пользу.
                     </p>
                 </section>
 
-                 <section class="project-section">
-                     <h2><i class="fas fa-rocket"></i> Featured Project</h2>
-                     <div class="project-card">
-                        <h4><a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" style="color: var(--clr-primary);">@cryptowartov_bot</a></h4>
-                         <p>Автономный Telegram-бот для перехвата и анализа чеков от популярных крипто-ботов. Оптимизирован для скорости реакции и фильтрации данных. Основной личный проект.</p>
-                         <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="btn accent"><i class="fab fa-telegram-plane"></i> Access Bot</a>
+                <section id="services">
+                    <h2 class="section-header primary"><i class="fas fa-terminal"></i> Core Services // Stack</h2>
+                    <div class="grid grid-cols-3">
+                        <div class="service-card">
+                            <h3><i class="fab fa-telegram-plane"></i> Telegram Bots</h3>
+                            <p>Разработка ботов любой сложности: уведомления, игры, платежи, API-интеграции, парсеры, админ-панели.</p>
+                        </div>
+                        <div class="service-card">
+                            <h3><i class="fas fa-code"></i> Web Development</h3>
+                            <p>Создание сайтов: лендинги, визитки, API. Бэкенд и фронтенд, адаптивный дизайн, фокус на производительности.</p>
+                        </div>
+                        <div class="service-card">
+                            <h3><i class="fab fa-java"></i> Java Solutions</h3>
+                            <p>Бэкенд-разработка на Java: серверы, утилиты, API, библиотеки. Надежность и масштабируемость.</p>
+                        </div>
                     </div>
                 </section>
 
-                <section class="contact-section">
+                <section id="project">
+                     <h2 class="section-header accent"><i class="fas fa-rocket"></i> Featured Project</h2>
+                     <div class="project-card">
+                        <h4><i class="fas fa-robot"></i><a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer">@cryptowartov_bot</a></h4>
+                         <p>Автономный Telegram-бот для мониторинга и анализа чеков от популярных крипто-ботов. Оптимизирован для высокой скорости реакции и точной фильтрации. Мой основной личный проект.</p>
+                         <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="btn accent" style="margin-top: var(--spacing-sm);"><i class="fab fa-telegram-plane"></i> Access Bot</a>
+                    </div>
+                </section>
+
+                <section id="pricing">
+                    <h2 class="section-header secondary"><i class="fas fa-dollar-sign"></i> Engagement Model</h2>
+                     <div class="grid grid-cols-3">
+                        <div class="pricing-card">
+                            <h3>// Tier 1: Microtask</h3>
+                            <div class="price">от 5$</div>
+                            <p>Правки, консультации, мини-скрипты, небольшие задачи.</p>
+                        </div>
+                        <div class="pricing-card">
+                            <h3>// Tier 2: Standard Unit</h3>
+                            <div class="price">от 15$</div>
+                            <p>Бот/сайт/утилита под конкретную задачу по ТЗ.</p>
+                        </div>
+                        <div class="pricing-card">
+                            <h3>// Tier 3: Full Cycle</h3>
+                            <div class="price">от 30$</div>
+                            <p>Идея → Прототип → MVP → Запуск и поддержка.</p>
+                        </div>
+                    </div>
+                     <p style="text-align: center; margin-top: var(--spacing-md); color: var(--clr-text-muted); font-size: 0.9rem;">*Оплата: Криптовалюты (USDT etc.), Карта РФ, Telegram Stars.</p>
+                </section>
+
+                <section id="contact">
+                    <h2 class="section-header"><i class="fas fa-plug"></i> Access & Contact</h2>
                     <div class="contact-grid">
                         <a href="https://t.me/smsgetter" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Telegram: @smsgetter">
                             <i class="fab fa-telegram-plane"></i>
                         </a>
-                        <a href="#" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Channel (Link Pending)"> <!-- Placeholder for channel link -->
-                            <i class="fas fa-broadcast-tower"></i>
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Channel (N/A)">
+                            <i class="fas fa-broadcast-tower" style="opacity: 0.5;"></i>
                         </a>
-                         <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="My Bot: @cryptowartov_bot">
+                         <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Main Bot: @cryptowartov_bot">
                             <i class="fas fa-robot"></i>
                         </a>
                     </div>
-                     <div class="copy-button-wrapper">
+                     <div class="copy-button-wrapper" style="text-align: center;">
                         <button class="btn secondary copy-key" id="copyKeyButton">
                             <i class="fas fa-key"></i> <span id="copyButtonText">Copy Access Key</span>
                         </button>
                      </div>
                 </section>
-            </div> <!-- End content wrapper -->
+            </div>
 
             <footer>
-                <p class="footer-text">Powered by WartovCrypto // SMSGetter node</p>
+                <p class="footer-text">// Status: ONLINE // Node: SMSGETTER // Powered by WartovCrypto //</p>
             </footer>
         </div>
 
         <div class="visual-panel">
-            <!--
-            IMPORTANT: Replace 'placeholder-anime-girl.png' with the actual path to your image.
-            The image should ideally have a transparent background.
-            -->
-            <img src="placeholder-anime-girl.png" alt="Cyberpunk Anime Interface Assistant">
-             <!-- Let me know if you have the image URL! -->
+            <img src="placeholder-anime-girl.png" alt="Interface Assistant">
         </div>
     </div>
 
     <script>
         const copyButton = document.getElementById('copyKeyButton');
         const copyButtonText = document.getElementById('copyButtonText');
+        let isKeyCopied = false;
 
         copyButton.addEventListener('click', () => {
-            const accessKey = `SMS_NODE_KEY_${Math.random().toString(36).substring(2, 10).toUpperCase()}`; // Example Key
+            if (isKeyCopied) return;
+
+            const accessKey = `SMSG_NODE_${Math.random().toString(36).slice(2, 10).toUpperCase()}_${Date.now().toString().slice(-4)}`;
             navigator.clipboard.writeText(accessKey).then(() => {
-                // Success feedback
+                isKeyCopied = true;
                 const originalText = copyButtonText.textContent;
-                copyButtonText.textContent = 'Key Copied!';
-                copyButton.style.borderColor = 'var(--clr-secondary)'; // Change border to cyan
-                copyButton.style.color = 'var(--clr-secondary)';
+                copyButton.classList.remove('secondary');
+                copyButton.classList.add('accent');
+                copyButtonText.textContent = 'KEY COPIED!';
+                copyButton.style.boxShadow = `0 0 15px var(--clr-glow-accent)`;
 
                 setTimeout(() => {
                     copyButtonText.textContent = originalText;
-                    copyButton.style.borderColor = ''; // Revert to original border (secondary)
-                    copyButton.style.color = ''; // Revert to original color (secondary)
-                }, 2000); // Revert after 2 seconds
+                    copyButton.classList.remove('accent');
+                    copyButton.classList.add('secondary');
+                     copyButton.style.boxShadow = '';
+                    isKeyCopied = false;
+                }, 2500);
             }).catch(err => {
                 console.error('Failed to copy key: ', err);
-                copyButtonText.textContent = 'Copy Failed!';
+                copyButtonText.textContent = 'COPY ERROR!';
                  setTimeout(() => {
                     copyButtonText.textContent = originalText;
                 }, 2000);
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    e.preventDefault();
+                     const offsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset - 40; // Adjust offset if needed
+
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
             });
         });
     </script>
