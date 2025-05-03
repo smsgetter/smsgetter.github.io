@@ -1,522 +1,744 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>smsgetter | Telegram & Web3 Dev</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --clr-bg: #0a0a0f;
-      --clr-bg-glass: rgba(15, 15, 25, 0.6);
-      --clr-primary: #00e0ff;
-      --clr-secondary: #ff61d9;
-      --clr-accent: #a45eff;
-      --clr-text: #e0e0e5;
-      --clr-text-muted: #a0a0a5;
-      --spacing: 1.8rem;
-      --radius: 12px;
-      --shadow-sm: rgba(0, 0, 0, 0.2);
-      --shadow-md: rgba(0, 0, 0, 0.4);
-      --shadow-lg: rgba(0, 0, 0, 0.6);
-      --transition-speed: 0.35s;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>smsgetter | Разработка Telegram-ботов, Сайтов и Java-решений</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <style>
+        :root {
+            --clr-bg: #0d0f1a;
+            --clr-bg-secondary: #1a1c2d;
+            --clr-bg-glass: rgba(26, 28, 45, 0.7);
+            --clr-primary: #00f2ea; /* Cyan Neon */
+            --clr-secondary: #ff40a1; /* Pink Neon */
+            --clr-accent: #a162f7; /* Purple Neon */
+            --clr-text: #e1e1f0;
+            --clr-text-muted: #a0a5c0;
+            --clr-border: rgba(255, 255, 255, 0.1);
+            --clr-glow-primary: rgba(0, 242, 234, 0.4);
+            --clr-glow-secondary: rgba(255, 64, 161, 0.4);
+            --clr-glow-accent: rgba(161, 98, 247, 0.4);
 
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 80px;
-    }
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2.5rem;
+            --spacing-xl: 4rem;
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--clr-bg);
-      color: var(--clr-text);
-      line-height: 1.7;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+            --radius: 12px;
+            --transition-speed: 0.35s;
+            --font-primary: 'Poppins', sans-serif;
+            --font-secondary: 'Inter', sans-serif;
+        }
 
-    h1, h2, h3 {
-      font-family: 'Poppins', sans-serif;
-      line-height: 1.3;
-      font-weight: 600;
-      color: var(--clr-text);
-    }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    h2 {
-      font-size: 2.5rem;
-      margin-bottom: var(--spacing);
-      text-align: center;
-      color: var(--clr-primary);
-      text-shadow: 0 0 15px rgba(0, 224, 255, 0.3);
-    }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px; /* Adjust based on nav height */
+            font-size: 16px; /* Base font size */
+        }
 
-    h3 {
-      font-size: 1.5rem;
-      margin-bottom: 0.8rem;
-      color: var(--clr-text);
-    }
+        body {
+            font-family: var(--font-secondary);
+            background: var(--clr-bg);
+            color: var(--clr-text);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-image: radial-gradient(circle at 10% 10%, var(--clr-glow-primary) 0%, transparent 30%),
+                              radial-gradient(circle at 90% 80%, var(--clr-glow-secondary) 0%, transparent 40%),
+                              radial-gradient(circle at 50% 50%, var(--clr-glow-accent) 0%, transparent 35%);
+            background-attachment: fixed;
+        }
 
-    p {
-      color: var(--clr-text-muted);
-      margin-bottom: 1rem;
-    }
+        h1, h2, h3, h4 {
+            font-family: var(--font-primary);
+            line-height: 1.3;
+            font-weight: 600;
+            color: var(--clr-text);
+        }
 
-    a {
-      color: var(--clr-primary);
-      text-decoration: none;
-      transition: color var(--transition-speed) ease, text-shadow var(--transition-speed) ease;
-    }
+        h2 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+            color: var(--clr-primary);
+            text-shadow: 0 0 10px var(--clr-glow-primary), 0 0 20px var(--clr-glow-primary);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
 
-    a:hover {
-      color: var(--clr-secondary);
-      text-shadow: 0 0 8px var(--clr-secondary);
-    }
-
-    .container {
-      max-width: 1100px;
-      margin-left: auto;
-      margin-right: auto;
-      padding: 0 var(--spacing);
-    }
-
-    section {
-      padding: calc(var(--spacing) * 3) 0;
-    }
-
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: calc(var(--spacing) * 0.8) var(--spacing);
-      background: var(--clr-bg-glass);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      position: fixed;
-      width: 100%;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 2px 10px var(--shadow-sm);
-    }
-
-    .logo {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: var(--clr-primary);
-      letter-spacing: 1px;
-    }
-    .logo:hover {
-      color: var(--clr-secondary);
-      text-shadow: 0 0 5px var(--clr-secondary);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: calc(var(--spacing) * 1.5);
-    }
-
-    .nav-links a {
-      font-weight: 500;
-      font-size: 1rem;
-      padding: 0.5rem 0;
-      position: relative;
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: var(--clr-secondary);
-      transition: width var(--transition-speed) ease;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .nav-toggle {
-      display: none;
-      cursor: pointer;
-      font-size: 1.8rem;
-      color: var(--clr-text);
-      background: none;
-      border: none;
-    }
-
-    .hero {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      min-height: 100vh;
-      padding: var(--spacing);
-      background: linear-gradient(145deg, rgba(10, 10, 15, 0.8), rgba(0, 31, 63, 0.9)),
-                  radial-gradient(circle at top left, var(--clr-primary), transparent 60%),
-                  radial-gradient(circle at bottom right, var(--clr-secondary), transparent 50%),
-                  var(--clr-bg);
-      background-blend-mode: multiply, screen, screen, normal;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(ellipse at center, rgba(10, 10, 15, 0) 0%, rgba(10, 10, 15, 1) 95%);
-      z-index: 1;
-    }
-
-    .hero-content {
-      z-index: 2;
-      position: relative;
-      animation: fadeIn HeroAnimation 1s ease-out forwards;
-    }
-
-    @keyframes fadeInHeroAnimation {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero h1 {
-      font-size: clamp(3rem, 8vw, 5.5rem);
-      font-weight: 700;
-      color: var(--clr-primary);
-      text-shadow: 0 0 20px rgba(0, 224, 255, 0.5), 0 0 30px rgba(0, 224, 255, 0.3);
-      margin-bottom: 0.5rem;
-      letter-spacing: 1px;
-    }
-
-    .hero p {
-      font-size: clamp(1.1rem, 3vw, 1.5rem);
-      margin: var(--spacing) 0;
-      color: var(--clr-text);
-      font-weight: 300;
-      max-width: 600px;
-    }
-
-    .hero-cta {
-        display: inline-block;
-        margin-top: var(--spacing);
-        padding: 0.8rem 2rem;
-        background: linear-gradient(90deg, var(--clr-primary), var(--clr-secondary));
-        color: var(--clr-bg);
-        font-weight: 600;
-        border-radius: var(--radius);
-        transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-        box-shadow: 0 5px 15px rgba(0, 224, 255, 0.3);
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .hero-cta:hover {
-        transform: translateY(-3px) scale(1.03);
-        box-shadow: 0 8px 25px rgba(255, 97, 217, 0.5);
-        color: var(--clr-bg);
-        text-shadow: none;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      padding: calc(var(--spacing) * 1.2);
-      border-radius: var(--radius);
-      transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, background var(--transition-speed) ease;
-      box-shadow: 0 5px 15px var(--shadow-sm);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(circle at top left, rgba(0, 224, 255, 0.05), transparent 70%);
-      opacity: 0;
-      transition: opacity var(--transition-speed) ease;
-      z-index: 0;
-    }
-
-    .card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 15px 30px var(--shadow-md);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .card:hover::before {
-      opacity: 1;
-    }
-
-    .card > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .services {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: var(--spacing);
-    }
-
-    .service-card h3 {
-        color: var(--clr-primary);
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-    }
-
-    .service-card h3::before {
-        content: '⚡';
-        display: inline-block;
-        font-size: 1.2em;
-        line-height: 1;
-    }
-    .service-card:nth-child(2) h3::before { content: '⚙️'; }
-    .service-card:nth-child(3) h3::before { content: '💎'; }
-    .service-card:nth-child(4) h3::before { content: '☕'; }
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--clr-primary), var(--clr-secondary));
+            margin: var(--spacing-sm) auto 0;
+            border-radius: 2px;
+            box-shadow: 0 0 8px var(--clr-glow-primary);
+        }
 
 
-    .pricing {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: var(--spacing);
-      margin-top: var(--spacing);
-    }
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--clr-text);
+        }
 
-    .pricing-card {
-      text-align: center;
-      border-top: 4px solid var(--clr-primary);
-    }
-    .pricing-card:nth-child(2) { border-top-color: var(--clr-accent); }
-    .pricing-card:nth-child(3) { border-top-color: var(--clr-secondary); }
+        p {
+            color: var(--clr-text-muted);
+            margin-bottom: var(--spacing-md);
+            font-size: 1rem;
+        }
 
-    .pricing-card:hover {
-      border-top-width: 6px;
-    }
+        a {
+            color: var(--clr-primary);
+            text-decoration: none;
+            transition: color var(--transition-speed) ease, text-shadow var(--transition-speed) ease;
+        }
 
-    .pricing-card h3 {
-      margin-bottom: 0.5em;
-      color: var(--clr-text);
-      font-size: 1.4rem;
-      font-weight: 500;
-    }
+        a:hover {
+            color: var(--clr-secondary);
+            text-shadow: 0 0 8px var(--clr-glow-secondary);
+        }
 
-    .pricing-card .price {
-      font-family: 'Poppins', sans-serif;
-      font-size: 2.8rem;
-      color: var(--clr-primary);
-      font-weight: 700;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 10px rgba(0, 224, 255, 0.4);
-    }
-    .pricing-card:nth-child(2) .price { color: var(--clr-accent); text-shadow: 0 0 10px rgba(164, 94, 255, 0.4); }
-    .pricing-card:nth-child(3) .price { color: var(--clr-secondary); text-shadow: 0 0 10px rgba(255, 97, 217, 0.4); }
+        .container {
+            max-width: 1140px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        section {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: var(--spacing-lg);
+            background: var(--clr-bg-glass);
+            padding: var(--spacing-xs);
+            border-radius: var(--radius);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--clr-border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .tab-button {
+            font-family: var(--font-primary);
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin: var(--spacing-xs);
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: var(--clr-text-muted);
+            font-weight: 600;
+            border-radius: calc(var(--radius) - 4px);
+            transition: all var(--transition-speed) ease;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--clr-primary), var(--clr-secondary));
+            transition: width var(--transition-speed) ease;
+            border-radius: 2px;
+        }
+
+        .tab-button.active {
+            color: var(--clr-primary);
+            text-shadow: 0 0 5px var(--clr-glow-primary);
+        }
+
+        .tab-button.active::before {
+            width: 80%;
+        }
+
+        .tab-button:hover:not(.active) {
+            color: var(--clr-text);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
 
-    .pricing-card p {
-        font-size: 0.95rem;
-    }
+        .card {
+            background: var(--clr-bg-glass);
+            backdrop-filter: blur(8px);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius);
+            border: 1px solid var(--clr-border);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+            position: relative;
+        }
 
-    #contact {
-      text-align: center;
-    }
+        .card::before { /* Subtle gradient glow effect on hover */
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, var(--clr-glow-primary) 0%, transparent 40%);
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+            z-index: 0;
+            transform: rotate(0deg);
+        }
 
-    #contact p {
-        font-size: 1.1rem;
-        color: var(--clr-text);
-    }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border-color: var(--clr-primary);
+        }
 
-    #contact a {
-        font-weight: 600;
-    }
+         .card:hover::before {
+            opacity: 0.2;
+            animation: rotateGlow 5s linear infinite;
+        }
+
+        @keyframes rotateGlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
 
 
-    footer {
-      text-align: center;
-      padding: var(--spacing);
-      margin-top: calc(var(--spacing) * 2);
-      opacity: 0.6;
-      font-size: 0.9rem;
-      background: rgba(10, 10, 15, 0.5);
-      color: var(--clr-text-muted);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
+        .card > * {
+            position: relative;
+            z-index: 1;
+        }
 
-    @media (max-width: 768px) {
-      h2 { font-size: 2rem; }
-      .hero h1 { font-size: clamp(2.5rem, 10vw, 4rem); }
-      .hero p { font-size: clamp(1rem, 4vw, 1.2rem); }
+        .card i { /* Icon styling */
+            font-size: 2rem;
+            margin-bottom: var(--spacing-md);
+            display: block;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--clr-primary), var(--clr-secondary));
+            color: var(--clr-bg);
+            box-shadow: 0 0 15px var(--clr-glow-primary);
+            transition: transform 0.3s ease;
+        }
+        .card:hover i {
+            transform: scale(1.1) rotate(10deg);
+        }
 
-      .nav-toggle {
-        display: block;
-        z-index: 1001;
-      }
+        .grid {
+            display: grid;
+            gap: var(--spacing-lg);
+        }
 
-      .nav-links {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background: var(--clr-bg);
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: calc(var(--spacing) * 2);
-        transform: translateX(100%);
-        transition: transform var(--transition-speed) ease-in-out;
-        visibility: hidden;
-      }
+        .grid-cols-1 { grid-template-columns: 1fr; }
+        .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
 
-      .nav-links.show {
-        transform: translateX(0);
-        visibility: visible;
-      }
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: var(--clr-bg-glass);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0; left: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--clr-border);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
 
-      .nav-links a {
-        font-size: 1.5rem;
-      }
-      .nav-links a::after { display: none; }
-    }
+        .logo {
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: var(--clr-primary);
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px var(--clr-glow-primary);
+        }
+        .logo:hover {
+            color: var(--clr-secondary);
+            text-shadow: 0 0 5px var(--clr-glow-secondary);
+        }
 
-    /* Subtle reveal animation on scroll */
-    .reveal {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-    }
+        .nav-links { display: flex; gap: var(--spacing-lg); }
+        .nav-links a { font-weight: 500; font-size: 1rem; }
+        .nav-toggle { display: none; cursor: pointer; font-size: 1.8rem; background: none; border: none; color: var(--clr-text); }
 
-    .reveal.visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--spacing-xl) var(--spacing-md);
+            position: relative;
+            overflow: hidden; /* Contain pseudo-elements */
+        }
 
-  </style>
+        .hero::before, .hero::after { /* Animated background shapes */
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: 0;
+        }
+        .hero::before {
+            width: 400px; height: 400px;
+            background: var(--clr-primary);
+            top: 10%; left: 10%;
+            animation: float 15s ease-in-out infinite alternate;
+        }
+        .hero::after {
+            width: 300px; height: 300px;
+            background: var(--clr-secondary);
+            bottom: 15%; right: 15%;
+            animation: float 12s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 30px) scale(1.1); }
+        }
+
+        .hero-content {
+            z-index: 1;
+            position: relative;
+            max-width: 700px;
+            animation: fadeInHero 1.2s ease-out forwards;
+        }
+
+        @keyframes fadeInHero {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 8vw, 4.5rem);
+            font-weight: 700;
+            color: var(--clr-text);
+            text-shadow: 0 0 15px var(--clr-glow-primary), 0 0 25px var(--clr-glow-secondary);
+            margin-bottom: var(--spacing-sm);
+            line-height: 1.2;
+        }
+         .hero h1 span { /* Highlight name */
+            color: var(--clr-primary);
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            margin-bottom: var(--spacing-lg);
+            color: var(--clr-text-muted);
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: linear-gradient(90deg, var(--clr-primary), var(--clr-secondary));
+            color: var(--clr-bg);
+            font-weight: 700;
+            font-family: var(--font-primary);
+            border-radius: var(--radius);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+            box-shadow: 0 5px 20px var(--clr-glow-primary);
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 30px var(--clr-glow-secondary);
+            color: var(--clr-bg-secondary); /* Darken text slightly on hover */
+            text-shadow: none;
+        }
+
+        /* Pricing Card Specifics */
+        .pricing-card { text-align: center; }
+        .pricing-card .price {
+            font-family: var(--font-primary);
+            font-size: 3rem;
+            color: var(--clr-primary);
+            font-weight: 700;
+            margin: var(--spacing-sm) 0 var(--spacing-md);
+            text-shadow: 0 0 15px var(--clr-glow-primary);
+        }
+        .pricing-card h3 {
+            color: var(--clr-accent);
+            font-weight: 600;
+        }
+
+        /* Project Card Specifics */
+        .project-card h4 {
+            color: var(--clr-primary);
+            margin-bottom: var(--spacing-xs);
+            font-size: 1.2rem;
+        }
+        .project-card .status {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--clr-secondary);
+            margin-bottom: var(--spacing-sm);
+            display: block;
+        }
+
+        /* Contact Section */
+        #contact-content { text-align: center; }
+        #contact-content p { font-size: 1.1rem; color: var(--clr-text); }
+        #contact-content a { font-weight: 700; display: inline-block; margin-top: var(--spacing-xs); }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+            opacity: 0.7;
+            font-size: 0.9rem;
+            background: rgba(13, 15, 26, 0.5);
+            color: var(--clr-text-muted);
+            border-top: 1px solid var(--clr-border);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .grid-cols-3 { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .grid-cols-2, .grid-cols-3 { grid-template-columns: 1fr; }
+            .nav-toggle { display: block; z-index: 1001; }
+            .nav-links {
+                position: fixed;
+                top: 0; left: 0; width: 100%; height: 100vh;
+                background: var(--clr-bg);
+                flex-direction: column; justify-content: center; align-items: center;
+                gap: var(--spacing-lg);
+                transform: translateX(100%);
+                transition: transform var(--transition-speed) ease-in-out;
+                visibility: hidden;
+                padding-top: 80px; /* Avoid overlapping nav */
+            }
+            .nav-links.show { transform: translateX(0); visibility: visible; }
+            .nav-links a { font-size: 1.5rem; }
+
+            .hero h1 { font-size: clamp(2.5rem, 10vw, 3.5rem); }
+            .hero .subtitle { font-size: clamp(1rem, 4vw, 1.2rem); }
+            .tabs { justify-content: flex-start; overflow-x: auto; } /* Allow horizontal scroll for tabs */
+            .tab-button { white-space: nowrap; }
+        }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    </style>
 </head>
 <body>
 
-  <nav>
-    <a href="#" class="logo">smsgetter</a>
-    <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
-    <div class="nav-links">
-      <a href="#services">Услуги</a>
-      <a href="#pricing">Цены</a>
-      <a href="#contact">Контакт</a>
-    </div>
-  </nav>
-
-  <div class="hero">
-    <div class="hero-content">
-      <h1>smsgetter</h1>
-      <p>Современные Telegram‑боты • Интеграции Web3 • Производительные Java‑решения</p>
-      <a href="#contact" class="hero-cta">Связаться</a>
-    </div>
-  </div>
-
-  <main>
-    <section id="services" class="container reveal">
-      <h2>Чем занимаюсь</h2>
-      <div class="services">
-        <div class="service-card card">
-          <h3>Telegram‑боты</h3>
-          <p>Разработка ботов любой сложности: от простых уведомлений до игровых платформ и систем с интеграцией платежей.</p>
+    <nav>
+        <a href="#" class="logo">smsgetter</a>
+        <button class="nav-toggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-links">
+            <a href="#about" class="tab-link">Обо мне</a>
+            <a href="#services" class="tab-link">Услуги</a>
+            <a href="#projects" class="tab-link">Проекты</a>
+            <a href="#pricing" class="tab-link">Цены</a>
+            <a href="#contact" class="tab-link">Контакт</a>
         </div>
-        <div class="service-card card">
-          <h3>Софт для Telegram</h3>
-          <p>Создание кастомных панелей управления, админ-ботов, парсеров и других утилит для автоматизации работы в Telegram.</p>
-        </div>
-        <div class="service-card card">
-          <h3>Web3‑решения</h3>
-          <p>Разработка децентрализованных приложений (DApp), смарт-контрактов (Solidity), NFT-проектов и интеграция с блокчейнами.</p>
-        </div>
-        <div class="service-card card">
-          <h3>Java‑разработка</h3>
-          <p>Бэкенд-разработка на Java: создание высоконагруженных серверов, API, микросервисов и кастомных библиотек.</p>
-        </div>
-      </div>
-    </section>
+    </nav>
 
-    <section id="pricing" class="container reveal">
-      <h2>Цены</h2>
-      <div class="pricing">
-        <div class="pricing-card card">
-          <h3>Минимум</h3>
-          <div class="price">от 5 $</div>
-          <p>Небольшие правки, консультации, разработка простых скриптов или мини-ботов.</p>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Привет! Я <span>smsgetter</span></h1>
+            <p class="subtitle">Создаю эффективные Telegram-боты, современные веб-сайты и надежные Java-приложения. Воплощаю ваши идеи в код.</p>
+            <a href="#contact" class="cta-button">Обсудить проект <i class="fas fa-arrow-right" style="font-size: 0.9em; margin-left: 5px; color: inherit; background: none; box-shadow: none; width: auto; height: auto; line-height: inherit; margin-bottom: 0; display: inline;"></i></a>
         </div>
-        <div class="pricing-card card">
-          <h3>Проект</h3>
-          <div class="price">от 15 $</div>
-          <p>Разработка стандартного Telegram-бота или утилиты под конкретную задачу. Индивидуальный подход.</p>
+    </header>
+
+    <main class="container">
+
+        <div class="tabs">
+            <button class="tab-button active" data-tab="about">Обо мне</button>
+            <button class="tab-button" data-tab="services">Услуги</button>
+            <button class="tab-button" data-tab="projects">Проекты</button>
+            <button class="tab-button" data-tab="pricing">Цены</button>
+            <button class="tab-button" data-tab="contact">Контакт</button>
         </div>
-        <div class="pricing-card card">
-          <h3>Полный цикл</h3>
-          <div class="price">от 30 $</div>
-          <p>Комплексная разработка проекта: от идеи и ТЗ до MVP, запуска и поддержки.</p>
+
+        <div id="tab-contents">
+            <section id="about" class="tab-content active reveal">
+                <h2>Кто я?</h2>
+                 <div class="card">
+                    <i class="fas fa-user-astronaut"></i>
+                    <h3>Опытный Разработчик</h3>
+                    <p>Привет! Меня зовут smsgetter. Я специализируюсь на создании кастомных IT-решений, уделяя особое внимание Telegram-ботам, веб-разработке и приложениям на Java. Мой подход — это сочетание технических навыков, креативности и фокуса на потребностях клиента.</p>
+                    <p>Я стремлюсь не просто писать код, а создавать инструменты, которые решают реальные задачи, автоматизируют процессы и приносят пользу вашему бизнесу или проекту. Имею подтвержденный опыт успешной работы с клиентами и горжусь качеством своих продуктов.</p>
+                </div>
+            </section>
+
+            <section id="services" class="tab-content reveal">
+                <h2>Мои Услуги</h2>
+                <div class="grid grid-cols-2">
+                    <div class="service-card card">
+                        <i class="fab fa-telegram-plane"></i>
+                        <h3>Telegram‑боты</h3>
+                        <p>Разработка ботов любой сложности: от простых автоответчиков и систем уведомлений до сложных игровых платформ, магазинов с приемом платежей и интеграций с внешними API.</p>
+                    </div>
+                    <div class="service-card card">
+                        <i class="fas fa-code"></i>
+                        <h3>Веб-разработка</h3>
+                        <p>Создание современных сайтов: лендинги, корпоративные порталы, визитки. Разработка бэкенда и фронтенда, адаптивный дизайн, оптимизация под поисковые системы (SEO).</p>
+                    </div>
+                     <div class="service-card card">
+                        <i class="fab fa-java"></i>
+                        <h3>Java‑разработка</h3>
+                        <p>Проектирование и разработка серверных приложений, API, утилит и библиотек на Java. Фокус на производительности, надежности и масштабируемости решений.</p>
+                    </div>
+                    <div class="service-card card">
+                        <i class="fas fa-cogs"></i>
+                        <h3>Кастомные Решения</h3>
+                        <p>Нужен уникальный инструмент? Готов разработать специализированный софт под ваши задачи, включая парсеры, автоматизаторы, панели управления и другое.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects" class="tab-content reveal">
+                <h2>Портфолио</h2>
+                <div class="grid grid-cols-3">
+                    <div class="project-card card">
+                        <i class="fas fa-star"></i>
+                        <h4>@StarCasinoTelegramBot</h4>
+                         <span class="status">Проект на продаже</span>
+                        <p>Комплексный игровой бот-казино для Telegram с различными режимами, системой баланса и админ-панелью. Демонстрирует возможности создания интерактивных ботов.</p>
+                    </div>
+                    <div class="project-card card">
+                         <i class="fas fa-robot"></i>
+                        <h4>Автоматизированные Боты (10+)</h4>
+                         <span class="status">Реализовано для клиентов</span>
+                        <p>Разработал более десяти ботов для автоматизации задач заказчиков: боты для приема платежей, системы рассылок, интеграции с CRM, боты-помощники и др.</p>
+                    </div>
+                    <div class="project-card card">
+                         <i class="fas fa-check-circle"></i>
+                        <h4>FunPay Заказы (30+)</h4>
+                         <span class="status">Подтвержденный Опыт</span>
+                        <p>Успешно выполнил более 30 заказов на платформе FunPay (до блокировки аккаунта), получив положительные отзывы. Доказательство надежности и качества работы.</p>
+                    </div>
+                     <div class="project-card card">
+                         <i class="fas fa-globe-americas"></i>
+                        <h4>Веб-сайты и Лендинги</h4>
+                         <span class="status">Разнообразные проекты</span>
+                        <p>Создал несколько лендингов и сайтов-визиток для клиентов, с фокусом на чистом коде, адаптивности и пользовательском опыте.</p>
+                    </div>
+                     <div class="project-card card">
+                         <i class="fas fa-tools"></i>
+                        <h4>Java Утилиты</h4>
+                         <span class="status">Внутренние и клиентские</span>
+                        <p>Разрабатывал кастомные Java-приложения для парсинга данных, автоматизации рутинных операций и взаимодействия с API для различных задач.</p>
+                    </div>
+                     <div class="project-card card">
+                         <i class="fas fa-lightbulb"></i>
+                        <h4>Ваш проект?</h4>
+                         <span class="status">Готов к новым вызовам</span>
+                        <p>Ищете разработчика для своей идеи? Свяжитесь со мной, и мы обсудим, как я могу помочь реализовать ваш следующий успешный проект.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="pricing" class="tab-content reveal">
+                <h2>Ценовая Политика</h2>
+                 <div class="grid grid-cols-3">
+                    <div class="pricing-card card">
+                        <i class="fas fa-rocket"></i>
+                        <h3>Старт</h3>
+                        <div class="price">от 5 $</div>
+                        <p>Небольшие правки в существующем коде, консультации, разработка простых скриптов или мини-ботов.</p>
+                    </div>
+                    <div class="pricing-card card">
+                        <i class="fas fa-drafting-compass"></i>
+                        <h3>Стандарт</h3>
+                        <div class="price">от 15 $</div>
+                        <p>Разработка Telegram-бота или веб-сайта средней сложности по вашему ТЗ. Индивидуальный подход.</p>
+                    </div>
+                    <div class="pricing-card card">
+                        <i class="fas fa-layer-group"></i>
+                        <h3>Комплекс</h3>
+                        <div class="price">от 30 $</div>
+                        <p>Полный цикл разработки: от обсуждения идеи и составления ТЗ до запуска, тестирования и поддержки.</p>
+                    </div>
+                </div>
+                 <p style="text-align: center; margin-top: var(--spacing-lg); color: var(--clr-text-muted);">* Указаны ориентировочные стартовые цены. Финальная стоимость зависит от сложности и объема работ. Всегда рад обсудить ваш бюджет.</p>
+            </section>
+
+            <section id="contact" class="tab-content reveal">
+                <h2>Связаться</h2>
+                <div id="contact-content" class="card">
+                    <i class="fas fa-paper-plane"></i>
+                    <h3>Готовы начать?</h3>
+                    <p>Лучший способ связаться со мной и обсудить детали вашего проекта — написать в Telegram.</p>
+                    <a href="https://t.me/smsgetter" class="cta-button" target="_blank" rel="noopener noreferrer">
+                        Написать в Telegram <i class="fab fa-telegram-plane" style="font-size: 1em; margin-left: 8px; color: inherit; background: none; box-shadow: none; width: auto; height: auto; line-height: inherit; margin-bottom: 0; display: inline;"></i>
+                    </a>
+                    <p style="margin-top: var(--spacing-lg); font-size: 0.95rem; color: var(--clr-text-muted);">
+                        Способы оплаты: Криптовалюты (USDT, BTC, ETH и др.), Карта банков РФ, Telegram Stars.
+                    </p>
+                </div>
+            </section>
         </div>
-      </div>
-    </section>
+    </main>
 
-    <section id="contact" class="container reveal">
-      <h2>Контакт</h2>
-      <p>Готов обсудить ваш проект. Напишите мне в Telegram:</p>
-      <p><a href="https://t.me/smsgetter">@smsgetter</a></p>
-      <p style="margin-top: var(--spacing); font-size: 0.95rem; color: var(--clr-text-muted);">Оплата: Криптовалюты (USDT, BTC, ETH и др.), Карта РФ, Telegram Stars</p>
-    </section>
-  </main>
+    <footer>© smsgetter <span id="year"></span></footer>
 
-  <footer>© smsgetter</footer>
+    <script>
+        // Mobile Nav Toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const navToggleIcon = navToggle.querySelector('i');
 
-  <script>
-    const navToggle = document.querySelector('.nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
+        navToggle.addEventListener('click', () => {
+            const isExpanded = navLinks.classList.toggle('show');
+            navToggle.setAttribute('aria-expanded', isExpanded);
+            navToggleIcon.className = isExpanded ? 'fas fa-times' : 'fas fa-bars';
+        });
 
-    navToggle.addEventListener('click', () => {
-      const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
-      navToggle.setAttribute('aria-expanded', !isExpanded);
-      navLinks.classList.toggle('show');
-      navToggle.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
-    });
+        // Close mobile nav on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks.classList.contains('show')) {
+                    navLinks.classList.remove('show');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navToggleIcon.className = 'fas fa-bars';
+                }
+            });
+        });
 
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        if (navLinks.classList.contains('show')) {
-          navLinks.classList.remove('show');
-          navToggle.setAttribute('aria-expanded', 'false');
-          navToggle.textContent = '☰';
+        // Tab Functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const navLinksForTabs = document.querySelectorAll('.nav-links a[href^="#"]');
+
+        function activateTab(tabId) {
+            tabButtons.forEach(button => {
+                button.classList.toggle('active', button.dataset.tab === tabId);
+            });
+            tabContents.forEach(content => {
+                content.classList.toggle('active', content.id === tabId);
+            });
+             // Ensure the section is visible if hidden by reveal effect
+            const activeContent = document.getElementById(tabId);
+            if (activeContent) {
+                activeContent.classList.add('visible'); // Make sure it's immediately visible if using reveal
+            }
         }
-      });
-    });
 
-    const revealElements = document.querySelectorAll('.reveal');
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.dataset.tab;
+                activateTab(tabId);
+                 // Update URL hash without jumping (optional)
+                // history.pushState(null, null, '#' + tabId);
+            });
+        });
+
+         // Link nav links to tabs
+        navLinksForTabs.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement && targetElement.classList.contains('tab-content')) {
+                    // e.preventDefault(); // Prevent default jump if activating tab
+                    activateTab(targetId);
+                     // Smooth scroll to the section container if needed
+                     targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                // If it's the hero link, just scroll normally
+                 else if (targetId === 'hero-content-anchor-or-similar') { // Check if it's hero or similar non-tab section
+                     // Allow default behavior or handle scrolling manually
+                }
+            });
+        });
+
+        // Initial Tab Activation (optional, e.g., based on URL hash)
+        const initialHash = window.location.hash.substring(1);
+        const validTabs = Array.from(tabButtons).map(b => b.dataset.tab);
+        if (initialHash && validTabs.includes(initialHash)) {
+            activateTab(initialHash);
+        } else {
+             activateTab('about'); // Default tab
         }
-      });
-    }, { threshold: 0.1 });
 
-    revealElements.forEach(el => revealObserver.observe(el));
 
-  </script>
+        // Scroll Reveal Animation
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // observer.unobserve(entry.target); // Keep observing if tabs can hide/show
+                } else {
+                    // Optional: Remove 'visible' class if element scrolls out of view
+                    // and you want the animation to re-trigger on scroll back
+                     // entry.target.classList.remove('visible');
+                }
+            });
+        }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Update Footer Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+    </script>
 
 </body>
 </html>
