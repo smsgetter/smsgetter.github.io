@@ -3,39 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMSGetter // Access Interface v3.0</title>
+    <title>SMSGetter // Node Access - Sector 7G</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&family=Teko:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --clr-bg: #08080d;
-            --clr-panel-bg: rgba(12, 14, 25, 0.85);
-            --clr-panel-border: rgba(161, 98, 247, 0.4);
-            --clr-panel-border-secondary: rgba(0, 224, 255, 0.3);
-            --clr-primary: #ff33a8;
-            --clr-secondary: #00e0ff;
-            --clr-accent: #a162f7;
-            --clr-text: #e8e8f0;
-            --clr-text-muted: #a0a5c0;
-            --clr-text-header: #ffffff;
-            --clr-text-ui: #00e0ff;
-            --clr-glow-primary: rgba(255, 51, 168, 0.7);
-            --clr-glow-secondary: rgba(0, 224, 255, 0.7);
-            --clr-glow-accent: rgba(161, 98, 247, 0.7);
+            /* --- Dark Red Horror Palette --- */
+            --clr-bg: #050202; /* Deep near-black */
+            --clr-panel-bg: rgba(15, 5, 5, 0.88); /* Very dark red tint */
+            --clr-panel-bg-alt: rgba(5, 0, 0, 0.7); /* Almost black */
+            --clr-panel-border: rgba(183, 28, 28, 0.5); /* Dark Red border */
+            --clr-panel-border-secondary: rgba(80, 80, 80, 0.4); /* Dark grey border */
+            --clr-primary: #b71c1c; /* Material Red 900 */
+            --clr-secondary: #7f0000; /* Darker Red */
+            --clr-accent: #4e0000; /* Even Darker Red / Blood */
+            --clr-text: #b0abab; /* Muted grey text */
+            --clr-text-muted: #757575;
+            --clr-text-header: #e0e0e0; /* Off-white for headers */
+            --clr-text-ui: #b71c1c; /* Red for specific UI */
 
-            --font-display: 'Orbitron', sans-serif;
-            --font-ui: 'Source Code Pro', monospace;
+            --clr-glow-primary: rgba(183, 28, 28, 0.6);
+            --clr-glow-secondary: rgba(127, 0, 0, 0.5);
+            --clr-glow-accent: rgba(78, 0, 0, 0.7);
 
-            --radius: 4px;
-            --spacing-xs: 0.5rem;
+            /* --- Fonts --- */
+            --font-display: 'Teko', sans-serif; /* Changed for horror feel */
+            --font-ui: 'Roboto Mono', monospace;
+
+            /* --- Layout --- */
+            --radius: 3px; /* Sharper radius */
+            --spacing-xs: 0.4rem;
             --spacing-sm: 0.75rem;
             --spacing-md: 1.25rem;
             --spacing-lg: 1.75rem;
             --spacing-xl: 2.5rem;
-            --transition-speed: 0.25s;
+            --transition-speed: 0.2s; /* Faster transitions */
         }
 
         *, *::before, *::after {
@@ -53,43 +58,49 @@
             font-family: var(--font-ui);
             background-color: var(--clr-bg);
             color: var(--clr-text);
-            line-height: 1.65;
+            line-height: 1.6;
             overflow-x: hidden;
             background-image:
-                radial-gradient(circle at 15% 15%, var(--clr-glow-accent) 0%, transparent 30%),
-                radial-gradient(circle at 85% 80%, var(--clr-glow-primary) 0%, transparent 35%),
-                linear-gradient(rgba(0, 224, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(161, 98, 247, 0.02) 1px, transparent 1px);
-            background-size: cover, cover, 50px 50px, 50px 50px;
+                /* Noise/Static overlay */
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 500 500' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"),
+                /* Subtle Radial Glows */
+                radial-gradient(circle at 5% 5%, var(--clr-glow-accent) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, var(--clr-glow-secondary) 0%, transparent 50%),
+                /* Dark Base */
+                var(--clr-bg);
+            background-size: cover, cover, cover, cover;
             background-position: 0 0, 0 0, 0 0, 0 0;
             background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: var(--spacing-md);
+            align-items: flex-start; /* Align container top */
+            padding: var(--spacing-lg);
             animation: fadeInBody 1s ease-out forwards;
         }
          @keyframes fadeInBody { from { opacity: 0; } to { opacity: 1; } }
 
         .main-interface {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1050px;
             background: var(--clr-panel-bg);
             border: 1px solid var(--clr-panel-border);
             border-radius: var(--radius);
-            box-shadow: 0 0 35px rgba(161, 98, 247, 0.2), inset 0 0 15px rgba(12, 14, 25, 0.5);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 0 25px rgba(78, 0, 0, 0.3), inset 0 0 10px rgba(5, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             display: flex;
             position: relative;
             overflow: hidden;
             animation: fadeInContainer 1s ease-out 0.2s forwards;
             opacity: 0;
+            margin-top: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            max-height: calc(100vh - var(--spacing-lg) * 2 - var(--spacing-md) * 2); /* Limit height */
         }
 
         @keyframes fadeInContainer {
-            from { opacity: 0; transform: scale(0.97); }
+            from { opacity: 0; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1); }
         }
 
@@ -98,147 +109,118 @@
             padding: var(--spacing-lg) var(--spacing-xl);
             display: flex;
             flex-direction: column;
-             border-right: 1px solid var(--clr-panel-border-secondary);
-             position: relative;
-             overflow-y: auto; /* Allows scrolling if content exceeds height */
-             max-height: 90vh; /* Limit height */
+            border-right: 1px solid var(--clr-panel-border-secondary);
+            position: relative;
+            overflow-y: auto; /* Enable scrolling */
         }
 
-         /* Style the scrollbar */
         .content-column::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
         .content-column::-webkit-scrollbar-track {
-            background: transparent;
+            background: rgba(0,0,0,0.2);
         }
         .content-column::-webkit-scrollbar-thumb {
-            background-color: var(--clr-accent);
-            border-radius: 3px;
+            background-color: var(--clr-primary);
+            border-radius: 2px;
             border: 1px solid var(--clr-panel-bg);
         }
         .content-column::-webkit-scrollbar-thumb:hover {
-             background-color: var(--clr-primary);
+             background-color: var(--clr-secondary);
         }
 
-
         .visual-column {
-            width: 380px;
+            width: 350px; /* Slightly narrower */
             flex-shrink: 0;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(160deg, rgba(10, 10, 15, 0.5) 0%, rgba(20, 22, 36, 0.8) 100%);
+            background: linear-gradient(170deg, rgba(5, 2, 2, 0.6) 0%, rgba(20, 5, 5, 0.9) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        @media (max-width: 850px) {
+        @media (max-width: 900px) {
             .main-interface {
                 flex-direction: column;
+                max-height: none; /* Remove height limit on mobile */
             }
-            .visual-column {
-                display: none; /* Hide visual column on smaller screens */
-            }
-             .content-column {
-                border-right: none;
-                 max-height: none; /* Remove height limit */
-             }
+            .visual-column { display: none; }
+            .content-column { border-right: none; overflow-y: visible; } /* Disable internal scroll */
         }
 
-        /* CSS-only Visual Representation in Visual Column */
+        /* Visual Column Effects (Horror Themed) */
         .visual-column::before,
         .visual-column::after {
             content: '';
             position: absolute;
             border-radius: 50%;
-            opacity: 0.5;
-            filter: blur(60px);
+            opacity: 0.4;
+            filter: blur(70px); /* Increased blur */
             z-index: 1;
         }
-
-        .visual-column::before { /* Primary Glow (Pinkish) */
+        .visual-column::before { /* Primary Red Glow */
+            width: 300px;
+            height: 350px;
+            background: var(--clr-primary);
+            bottom: -10%;
+            right: -30%;
+            animation: pulseGlowHorror 12s ease-in-out infinite alternate;
+        }
+        .visual-column::after { /* Darker Accent Glow */
             width: 250px;
             height: 300px;
-            background: var(--clr-primary);
-            bottom: 5%;
-            right: -20%;
-            animation: pulseGlowPrimary 8s ease-in-out infinite alternate;
+            background: var(--clr-accent);
+            top: -5%;
+            right: 5%;
+            animation: pulseGlowHorror 15s 1s ease-in-out infinite alternate;
         }
+        @keyframes pulseGlowHorror {
+            from { transform: scale(0.85) rotate(10deg); opacity: 0.3; }
+            to { transform: scale(1.05) rotate(-5deg); opacity: 0.5; }
+        }
+        .static-overlay { /* Add a subtle static effect */
+             position: absolute;
+             inset: 0;
+             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+             background-size: cover;
+             z-index: 2;
+             pointer-events: none;
+             animation: staticFlicker 0.15s infinite steps(1);
+        }
+         @keyframes staticFlicker {
+            0%, 100% { opacity: 0.06; }
+            50% { opacity: 0.09; }
+         }
 
-        .visual-column::after { /* Secondary Glow (Cyan) */
-            width: 200px;
-            height: 250px;
-            background: var(--clr-secondary);
-            top: 10%;
-            right: 10%;
-            animation: pulseGlowSecondary 10s ease-in-out infinite alternate;
-        }
-
-        /* Abstract Shapes */
-        .shape-container {
-            position: absolute;
-            inset: 0;
-            z-index: 2;
-        }
-        .shape {
-            position: absolute;
-            background: linear-gradient(45deg, var(--clr-primary), var(--clr-secondary));
-            opacity: 0.1;
-            animation: floatShape 15s ease-in-out infinite alternate;
-        }
-        .shape1 {
-            width: 80px; height: 80px;
-            bottom: 20%; right: 30%;
-            border-radius: 50% 30% 40% 60%;
-            animation-delay: 0s;
-        }
-        .shape2 {
-            width: 120px; height: 60px;
-            top: 25%; right: 15%;
-            border-radius: 30% 70% 60% 40%;
-             filter: blur(5px);
-             animation-delay: -5s;
-        }
-         .shape3 {
-             width: 3px; height: 150px;
-             bottom: 10%; right: 50%;
-             background: var(--clr-secondary);
-             opacity: 0.4;
-              filter: blur(1px);
-             animation-delay: -2s;
-             transform-origin: bottom;
-        }
-
-        @keyframes pulseGlowPrimary {
-            from { transform: scale(0.9); opacity: 0.4; }
-            to { transform: scale(1.1); opacity: 0.6; }
-        }
-        @keyframes pulseGlowSecondary {
-            from { transform: scale(1.1); opacity: 0.6; }
-            to { transform: scale(0.9); opacity: 0.4; }
-        }
-        @keyframes floatShape {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(20deg); }
-            100% { transform: translateY(5px) rotate(-10deg); }
-        }
-
-
-        /* Content Styling */
+        /* --- Content Styling --- */
         .header {
             margin-bottom: var(--spacing-lg);
             border-bottom: 1px solid var(--clr-panel-border-secondary);
             padding-bottom: var(--spacing-md);
+            position: relative; /* For pseudo-element */
+        }
+        .header::after { /* Decorative corner */
+             content: '';
+             position: absolute;
+             bottom: 0;
+             right: 0;
+             width: 10px;
+             height: 10px;
+             border-bottom: 1px solid var(--clr-primary);
+             border-right: 1px solid var(--clr-primary);
+             opacity: 0.6;
         }
 
         .user-id {
             font-family: var(--font-ui);
             color: var(--clr-text-muted);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             margin-bottom: var(--spacing-md);
             display: block;
             position: relative;
             padding-left: var(--spacing-md);
+            text-transform: uppercase;
         }
         .user-id::before {
             content: '';
@@ -246,28 +228,32 @@
             left: 0;
             top: 50%;
             transform: translateY(-50%);
-            width: 8px;
-            height: 8px;
-            background-color: var(--clr-secondary);
-            border-radius: 2px;
-             box-shadow: 0 0 8px var(--clr-glow-secondary);
-             animation: blinkStatus 1.5s infinite steps(1);
+            width: 6px;
+            height: 6px;
+            background-color: var(--clr-primary);
+            border-radius: 1px;
+            box-shadow: 0 0 6px var(--clr-glow-primary);
+            animation: pulseStatus 2s infinite ease-in-out;
         }
-        @keyframes blinkStatus { 50% { opacity: 0.3; } }
-
+        @keyframes pulseStatus {
+            0%, 100% { transform: translateY(-50%) scale(1); opacity: 0.8; }
+            50% { transform: translateY(-50%) scale(0.7); opacity: 0.4; }
+        }
         .user-id span {
             color: var(--clr-text);
             font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         h1 {
             font-family: var(--font-display);
-            font-size: clamp(1.6rem, 4vw, 2rem);
+            font-size: clamp(2rem, 5vw, 2.8rem); /* Larger display font */
             color: var(--clr-text-header);
             margin-bottom: var(--spacing-xs);
-            text-shadow: 0 0 10px var(--clr-glow-secondary);
+            text-shadow: 0 0 10px var(--clr-glow-secondary), 0 0 2px #000;
             letter-spacing: 1px;
-            font-weight: 700;
+            font-weight: 600;
+            line-height: 1.1;
         }
         h1 span {
             color: var(--clr-primary);
@@ -276,10 +262,11 @@
 
         .subtitle {
             font-family: var(--font-ui);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--clr-text-muted);
             margin-bottom: var(--spacing-lg);
-            max-width: 55ch;
+            max-width: 60ch;
+            font-style: italic;
         }
 
         .button-panel {
@@ -288,12 +275,12 @@
             gap: var(--spacing-sm);
             margin-bottom: var(--spacing-xl);
             width: 100%;
-            max-width: 300px;
+            max-width: 320px;
         }
 
         .btn {
             font-family: var(--font-ui);
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(0, 0, 0, 0.15);
             border: 1px solid var(--clr-panel-border-secondary);
             color: var(--clr-text-muted);
             padding: var(--spacing-sm) var(--spacing-md);
@@ -301,7 +288,7 @@
             cursor: pointer;
             text-align: left;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem; /* Slightly smaller */
             transition: all var(--transition-speed) ease;
             position: relative;
             overflow: hidden;
@@ -309,6 +296,8 @@
             display: flex;
             align-items: center;
             gap: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .btn::before {
              content: '';
@@ -316,76 +305,72 @@
              left: 0;
              top: 0;
              bottom: 0;
-             width: 3px;
+             width: 2px;
              background-color: var(--clr-primary);
+             opacity: 0.7;
              transform: scaleY(0);
-             transform-origin: bottom;
-             transition: transform var(--transition-speed) ease;
-             box-shadow: 0 0 8px var(--clr-glow-primary);
+             transform-origin: center;
+             transition: transform var(--transition-speed) ease, opacity var(--transition-speed) ease;
         }
 
         .btn:hover {
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(183, 28, 28, 0.1);
             color: var(--clr-text);
             border-color: var(--clr-primary);
-            transform: translateX(5px);
-             box-shadow: 5px 0 15px -5px var(--clr-glow-primary);
+            transform: translateX(4px);
         }
          .btn:hover::before {
              transform: scaleY(1);
-        }
+             opacity: 1;
+             box-shadow: 0 0 5px var(--clr-glow-primary);
+         }
         .btn:active {
             transform: translateX(2px);
-            box-shadow: none;
+            background: rgba(183, 28, 28, 0.2);
         }
 
          .btn i {
-            width: 18px; /* Fixed width for icon alignment */
+            width: 16px;
             text-align: center;
-            color: var(--clr-secondary);
+            color: var(--clr-primary);
             transition: color var(--transition-speed) ease;
+            font-size: 0.9em;
          }
          .btn:hover i {
-             color: var(--clr-primary);
+             color: var(--clr-text-header);
          }
-          .btn.accent i { color: var(--clr-accent); }
-          .btn.accent:hover i { color: var(--clr-primary); } /* Or keep accent color */
-
 
         section {
             margin-bottom: var(--spacing-xl);
         }
          section h2 {
-             font-family: var(--font-ui);
-             font-size: 1rem;
-             color: var(--clr-accent);
+             font-family: var(--font-display);
+             font-size: 1.5rem; /* Larger section headers */
+             color: var(--clr-primary);
              margin-bottom: var(--spacing-md);
-             text-transform: uppercase;
-             letter-spacing: 1.5px;
+             letter-spacing: 1px;
+             font-weight: 600;
              display: flex;
              align-items: center;
-             border-bottom: 1px dotted var(--clr-panel-border-secondary);
+             border-bottom: 1px solid var(--clr-panel-border);
              padding-bottom: var(--spacing-xs);
+             text-shadow: 0 0 8px var(--clr-glow-primary);
          }
          section h2 i {
-             margin-right: var(--spacing-sm);
-             color: var(--clr-accent);
-             font-size: 1rem;
-             text-shadow: 0 0 6px var(--clr-glow-accent);
+             margin-right: var(--spacing-md);
+             color: var(--clr-primary);
+             font-size: 1.1rem;
+             opacity: 0.8;
          }
-          section h2.primary { color: var(--clr-primary); }
-          section h2.primary i { color: var(--clr-primary); text-shadow: 0 0 6px var(--clr-glow-primary); }
-          section h2.secondary { color: var(--clr-secondary); }
-          section h2.secondary i { color: var(--clr-secondary); text-shadow: 0 0 6px var(--clr-glow-secondary); }
-
 
         .content-block {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--clr-text-muted);
-            background: rgba(0,0,0,0.1);
+            background: var(--clr-panel-bg-alt);
             padding: var(--spacing-md);
-            border-left: 2px solid var(--clr-secondary);
+            border-left: 2px solid var(--clr-primary);
             border-radius: 0 var(--radius) var(--radius) 0;
+            box-shadow: inset 3px 0 8px rgba(183, 28, 28, 0.1);
         }
          .content-block strong {
              color: var(--clr-text);
@@ -395,47 +380,101 @@
               color: var(--clr-primary);
               text-decoration: none;
               font-weight: 600;
+              border-bottom: 1px dashed rgba(183, 28, 28, 0.5);
+              transition: color var(--transition-speed), border-color var(--transition-speed);
           }
           .content-block a:hover {
-              text-decoration: underline;
-              text-shadow: 0 0 5px var(--clr-glow-primary);
+              color: var(--clr-text-header);
+              border-color: var(--clr-primary);
           }
 
+        /* Grid for Portfolio/Pricing */
+         .grid {
+            display: grid;
+            gap: var(--spacing-md);
+        }
+        .grid-cols-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+        .card {
+            background: var(--clr-panel-bg-alt);
+            padding: var(--spacing-md);
+            border: 1px solid var(--clr-panel-border-secondary);
+            border-radius: var(--radius);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+            box-shadow: inset 0 0 10px rgba(5, 0, 0, 0.5);
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: var(--clr-primary);
+            box-shadow: 0 5px 15px rgba(78, 0, 0, 0.4), inset 0 0 10px rgba(5, 0, 0, 0.5);
+        }
+        .card h3, .card h4 {
+            font-family: var(--font-display);
+            color: var(--clr-text);
+            margin-bottom: var(--spacing-sm);
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+         .card h4 a {
+             color: var(--clr-primary);
+             text-decoration: none;
+         }
+        .card p {
+            font-size: 0.85rem;
+            color: var(--clr-text-muted);
+            margin-bottom: 0;
+        }
+         .card .price {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--clr-primary);
+            font-weight: 700;
+            margin: var(--spacing-xs) 0 var(--spacing-sm);
+            text-shadow: 0 0 8px var(--clr-glow-primary);
+         }
+          .card.pricing-card { text-align: center; }
+          .card.pricing-card h3 { color: var(--clr-text-muted); font-size: 0.9rem; text-transform: uppercase; }
+
+        .contact-section {
+            text-align: center; /* Center elements in this section */
+        }
         .contact-grid {
-            display: flex;
-            gap: var(--spacing-lg);
-            justify-content: flex-start; /* Align left */
+            display: inline-flex; /* Align inline */
+            gap: var(--spacing-xl);
+            justify-content: center;
             margin-top: var(--spacing-md);
         }
         .contact-link {
-            font-size: 1.6rem;
+            font-size: 1.8rem; /* Larger icons */
             color: var(--clr-text-muted);
             transition: all var(--transition-speed) ease;
             position: relative;
-            display: block; /* Ensure tooltip positioning works */
+            display: block;
         }
         .contact-link:hover {
-            transform: translateY(-3px) scale(1.1);
-            color: var(--clr-secondary);
-            text-shadow: 0 0 10px var(--clr-glow-secondary);
+            transform: translateY(-4px) scale(1.15);
+            color: var(--clr-primary);
+            text-shadow: 0 0 12px var(--clr-glow-primary);
         }
         .contact-link::after {
             content: attr(data-tooltip);
             position: absolute;
-            bottom: 115%;
+            bottom: 120%;
             left: 50%;
             transform: translateX(-50%);
-            background-color: var(--clr-secondary);
-            color: var(--clr-bg);
+            background-color: var(--clr-primary);
+            color: #fff;
             padding: var(--spacing-xs) var(--spacing-sm);
             border-radius: 3px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-family: var(--font-ui);
             white-space: nowrap;
             opacity: 0;
             visibility: hidden;
             transition: opacity var(--transition-speed) ease, visibility var(--transition-speed) ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
             z-index: 10;
         }
         .contact-link:hover::after {
@@ -444,32 +483,28 @@
         }
 
         footer {
-            margin-top: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
             padding-top: var(--spacing-md);
             border-top: 1px dashed var(--clr-panel-border);
         }
         .footer-text {
             font-family: var(--font-ui);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--clr-text-muted);
             text-align: left;
-            opacity: 0.6;
-            text-shadow: 1px 1px 0 rgba(255, 51, 168, 0.1), -1px -1px 0 rgba(0, 224, 255, 0.1);
-            animation: glitchFooter 8s infinite steps(2, jump-none);
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-         @keyframes glitchFooter {
-             0%, 100% { opacity: 0.6; transform: translateX(0); }
-             50% { opacity: 0.55; transform: translateX(1px); }
-         }
 
         ::selection {
             background-color: var(--clr-primary);
-            color: var(--clr-bg);
+            color: #fff;
             text-shadow: none;
         }
         ::-moz-selection {
             background-color: var(--clr-primary);
-            color: var(--clr-bg);
+            color: #fff;
             text-shadow: none;
         }
 
@@ -478,73 +513,134 @@
 <body>
 
     <div class="main-interface">
-        <div class="content-column">
+        <div class="content-column" id="content-scroll-wrapper">
             <div>
                 <header class="header">
                     <div class="user-id">
-                        Operator Status: <span>smsgetter [ONLINE]</span>
+                        Operator Status: <span>smsgetter [Signal Acquired]</span>
                     </div>
-                    <h1>SMSGetter <span>Node</span></h1>
-                    <p class="subtitle">Interface v3.0 // Autonomous Access & Intelligence Module</p>
+                    <h1>SYSTEM INTERFACE: <span>SMSGETTER</span></h1>
+                    <p class="subtitle">// Dark Node Protocol v7G // Data Stream & Task Execution</p>
                     <div class="button-panel">
-                        <a href="#about" class="btn"><i class="fas fa-id-badge"></i> Operator Info</a>
-                        <a href="#project" class="btn accent"><i class="fas fa-rocket"></i> Featured Project</a>
-                        <a href="#contact" class="btn secondary"><i class="fas fa-network-wired"></i> Connection Hub</a>
-                        <button class="btn copy-key" id="copyKeyButton"><i class="fas fa-key"></i><span id="copyButtonText">Copy Access Key</span></button>
+                        <a href="#about" class="btn"><i class="fas fa-terminal"></i> Operator Bio</a>
+                        <a href="#services" class="btn"><i class="fas fa-cogs"></i> Core Services</a>
+                        <a href="#portfolio" class="btn"><i class="fas fa-briefcase"></i> Project Logs</a>
+                        <a href="#pricing" class="btn"><i class="fas fa-file-invoice-dollar"></i> Engagement Tiers</a>
+                        <a href="#project-main" class="btn"><i class="fas fa-crosshairs"></i> Primary Project</a>
+                        <a href="#contact" class="btn"><i class="fas fa-plug"></i> Comms Link</a>
+                        <button class="btn copy-key" id="copyKeyButton"><i class="fas fa-key"></i><span id="copyButtonText">Copy Node Key</span></button>
                     </div>
                 </header>
 
                 <main>
                     <section id="about">
-                        <h2 class="secondary"><i class="fas fa-info-circle"></i> About Operator // smsgetter</h2>
+                        <h2><i class="fas fa-id-card"></i> Operator Profile // smsgetter</h2>
                         <div class="content-block">
-                           Я, <strong>smsgetter</strong>, разработчик, сфокусированный на создании результативных IT-решений. Моя специализация — <strong>Telegram-боты</strong> (от простых до комплексных), современная <strong>веб-разработка</strong> (фронтенд/бэкенд, API) и надежные приложения на <strong>Java</strong>. Превращаю концепции в функциональный код для автоматизации и решения задач.
+                           Я, <strong>smsgetter</strong>, функционирую как разработчик, специализирующийся на создании IT-решений в hostilе цифровой среде. Основные векторы: <strong>Telegram-системы</strong> (от простейших агентов до автономных комплексов), <strong>Web-интерфейсы</strong> (стелс-сайты, API-шлюзы) и <strong>Java-модули</strong> (высоконагруженные серверы, кастомные утилиты). Моя задача – трансформация абстрактных директив в исполняемый код для решения оперативных задач.
                         </div>
                     </section>
 
-                    <section id="project">
-                        <h2 class="primary"><i class="fas fa-star"></i> Featured Project // CryptoWartov</h2>
+                     <section id="services">
+                        <h2><i class="fas fa-tools"></i> Core Service Matrix</h2>
+                        <div class="grid grid-cols-3">
+                            <div class="card">
+                                <h3><i class="fab fa-telegram-plane"></i> Telegram Systems</h3>
+                                <p>Боты, парсеры, API-интеграции, платежные шлюзы, админ-панели.</p>
+                            </div>
+                            <div class="card">
+                                <h3><i class="fas fa-code"></i> Web Development</h3>
+                                <p>Лендинги, API, бэк/фронт-енд, адаптивный/скрытный дизайн.</p>
+                            </div>
+                            <div class="card">
+                                <h3><i class="fab fa-java"></i> Java Modules</h3>
+                                <p>Серверы, API, утилиты, библиотеки. Надежность, производительность.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="portfolio">
+                        <h2><i class="fas fa-history"></i> Project Archive</h2>
+                        <div class="grid grid-cols-2">
+                             <div class="card project-card">
+                                <h4><i class="fas fa-star"></i> @StarCasinoBot (Продано)</h4>
+                                <p>Комплексный игровой бот-казино Telegram. Демонстрация возможностей.</p>
+                            </div>
+                            <div class="card project-card">
+                                <h4><i class="fas fa-robot"></i> Automated Bots (10+)</h4>
+                                <p>Боты для платежей, рассылок, CRM-интеграций, автоответчики.</p>
+                            </div>
+                            <div class="card project-card">
+                                <h4><i class="fas fa-check-circle"></i> FunPay Orders (30+)</h4>
+                                <p>Успешно выполненные заказы (до блокировки). Подтвержденный опыт.</p>
+                            </div>
+                            <div class="card project-card">
+                                <h4><i class="fas fa-globe"></i> Web Interfaces</h4>
+                                <p>Лендинги и сайты-визитки для различных клиентов.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="pricing">
+                        <h2><i class="fas fa-tags"></i> Engagement Tiers</h2>
+                         <div class="grid grid-cols-3">
+                            <div class="card pricing-card">
+                                <h3>// Tier 1: Micro</h3>
+                                <div class="price">от 5$</div>
+                                <p>Правки, консультации, скрипты.</p>
+                            </div>
+                            <div class="card pricing-card">
+                                <h3>// Tier 2: Standard</h3>
+                                <div class="price">от 15$</div>
+                                <p>Бот/сайт/утилита по ТЗ.</p>
+                            </div>
+                            <div class="card pricing-card">
+                                <h3>// Tier 3: Complex</h3>
+                                <div class="price">от 30$</div>
+                                <p>Полный цикл разработки.</p>
+                            </div>
+                        </div>
+                        <p style="text-align: center; margin-top: var(--spacing-md); color: var(--clr-text-muted); font-size: 0.8rem;">*Протоколы оплаты: Crypto (USDT+), Карта РФ, TG Stars.</p>
+                    </section>
+
+                    <section id="project-main">
+                        <h2><i class="fas fa-crosshairs"></i> Primary Objective // CryptoWartov</h2>
                          <div class="content-block">
-                            Мой основной проект — <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer">@cryptowartov_bot</a>. Это высокопроизводительный Telegram-бот, предназначенный для мониторинга и анализа чеков в крипто-сфере. Он отличается скоростью реакции и продвинутыми механизмами фильтрации данных.
+                            Основной активный проект: <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer">@cryptowartov_bot</a>. Автономный Telegram-бот для перехвата и анализа чеков от крипто-ботов. Высокая скорость реакции, продвинутая фильтрация данных.
                             <br>
-                            <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="btn primary" style="margin-top: var(--spacing-md); border-color: var(--clr-primary); color: var(--clr-primary); max-width: 200px;">
-                                <i class="fab fa-telegram-plane"></i> Access Bot
+                            <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="btn" style="margin-top: var(--spacing-md); border-color: var(--clr-primary); color: var(--clr-primary); max-width: 200px;">
+                                <i class="fab fa-telegram-plane"></i> Access Channel
                             </a>
                         </div>
                     </section>
 
-                    <section id="contact">
-                        <h2 class="accent"><i class="fas fa-plug"></i> Connection Hub // Contact</h2>
-                        <div class="content-block">
-                            Для обсуждения проектов, сотрудничества или связи:
+                    <section id="contact" class="contact-section">
+                        <h2><i class="fas fa-link"></i> Comms Link // Contact</h2>
+                        <div class="content-block" style="text-align: center; border-left: none; border-top: 2px solid var(--clr-primary); border-radius: var(--radius);">
+                            <p>Для инициации контакта или обсуждения задач:</p>
                             <div class="contact-grid">
                                 <a href="https://t.me/smsgetter" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Telegram: @smsgetter">
                                     <i class="fab fa-telegram-plane"></i>
                                 </a>
-                                <a href="#" class="contact-link" data-tooltip="Channel (N/A)" style="opacity: 0.4; cursor: default;">
+                                <a href="#" class="contact-link" data-tooltip="Channel Offline" style="opacity: 0.3; cursor: default;">
                                     <i class="fas fa-broadcast-tower"></i>
                                 </a>
-                                 <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Featured Bot">
+                                 <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Primary Project Bot">
                                     <i class="fas fa-robot"></i>
                                 </a>
                             </div>
-                            <p style="font-size: 0.85rem; margin-top: var(--spacing-md);">Оплата: Криптовалюты (USDT, etc.), Карта РФ, Telegram Stars.</p>
                         </div>
                     </section>
                 </main>
             </div>
 
             <footer>
-                <p class="footer-text">// INTERFACE v3.0 // NODE_ID: SMSGETTER // SYSTEM_STATUS: OPERATIONAL //</p>
+                <p class="footer-text">// SYS_TIME: <span id="sys-time">--:--:--</span> // NODE_ID: SMSGETTER // STATUS: ACTIVE //</p>
             </footer>
         </div>
 
         <div class="visual-column">
-           <div class="shape-container">
-                <div class="shape shape1"></div>
-                <div class="shape shape2"></div>
-                <div class="shape shape3"></div>
-           </div>
+            <div class="static-overlay"></div>
+           <!-- Abstract effects here -->
         </div>
     </div>
 
@@ -556,26 +652,26 @@
         copyButton.addEventListener('click', () => {
             if (isKeyCopied) return;
 
-            const accessKey = `SMSG-INTF-${Math.random().toString(16).slice(2, 8).toUpperCase()}-${Date.now().toString().slice(-5)}`;
+            const accessKey = `SMSG7G-KEY-${Math.random().toString(36).slice(2, 9).toUpperCase()}`;
             navigator.clipboard.writeText(accessKey).then(() => {
                 isKeyCopied = true;
                 const originalText = copyButtonText.textContent;
 
                 copyButton.style.borderColor = 'var(--clr-secondary)';
-                copyButton.style.color = 'var(--clr-secondary)';
-                copyButton.querySelector('i').style.color = 'var(--clr-secondary)';
-                 copyButton.style.boxShadow = `0 0 15px var(--clr-glow-secondary)`;
+                copyButton.style.color = 'var(--clr-text)';
+                copyButton.querySelector('i').style.color = 'var(--clr-text)';
+                copyButton.style.boxShadow = `0 0 10px var(--clr-glow-secondary)`;
                 copyButtonText.textContent = 'KEY COPIED!';
 
 
                 setTimeout(() => {
                     copyButtonText.textContent = originalText;
-                     copyButton.style.borderColor = '';
-                     copyButton.style.color = '';
-                     copyButton.querySelector('i').style.color = '';
-                     copyButton.style.boxShadow = '';
+                    copyButton.style.borderColor = '';
+                    copyButton.style.color = '';
+                    copyButton.querySelector('i').style.color = '';
+                    copyButton.style.boxShadow = '';
                     isKeyCopied = false;
-                }, 2500);
+                }, 2000);
             }).catch(err => {
                 console.error('Failed to copy key: ', err);
                 copyButtonText.textContent = 'COPY ERROR!';
@@ -585,14 +681,16 @@
             });
         });
 
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        // Smooth Scroll Fix for Scrollable Container
+        const contentColumn = document.getElementById('content-scroll-wrapper');
+        document.querySelectorAll('.button-panel a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                  e.preventDefault();
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
                 if(targetElement) {
-                    const contentColumn = document.querySelector('.content-column');
-                    const offsetTop = targetElement.offsetTop - contentColumn.offsetTop - 20; // Adjust offset within scrollable container
+                    // Calculate position relative to the scrollable container
+                    const offsetTop = targetElement.offsetTop - contentColumn.offsetTop - 20; // 20px offset from top
 
                     contentColumn.scrollTo({
                         top: offsetTop,
@@ -601,6 +699,18 @@
                 }
             });
         });
+
+        // System Time Clock
+        const timeElement = document.getElementById('sys-time');
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime(); // Initial call
 
     </script>
 
