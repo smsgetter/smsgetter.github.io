@@ -3,716 +3,1045 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMSGetter // Node Access - Sector 7G</title>
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta property="og:title" content="smsgetter">
+    <meta property="og:url" content="https://smsgetter.github.io/">
+    <meta property="og:image" content="https://raw.githubusercontent.com/smsgetter/smsgetter.github.io/main/%D0%A1%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%20%D0%B7%D0%B2%D1%91%D0%B7%D0%B4%20%D0%B8%20%D1%82%D0%B5%D0%BA%D1%81%D1%82%20_smsgetter_.png">
+    <meta property="og:site_name" content="SMSGetter Bio">
+    <meta name="description" content="smsgetter - Разработчик, проекты, услуги.">
+    <link rel="canonical" href="https://smsgetter.github.io/">
+    <title>smsgetter</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            /* --- Dark Red Horror Palette --- */
-            --clr-bg: #050202; /* Deep near-black */
-            --clr-panel-bg: rgba(15, 5, 5, 0.88); /* Very dark red tint */
-            --clr-panel-bg-alt: rgba(5, 0, 0, 0.7); /* Almost black */
-            --clr-panel-border: rgba(183, 28, 28, 0.5); /* Dark Red border */
-            --clr-panel-border-secondary: rgba(80, 80, 80, 0.4); /* Dark grey border */
-            --clr-primary: #b71c1c; /* Material Red 900 */
-            --clr-secondary: #7f0000; /* Darker Red */
-            --clr-accent: #4e0000; /* Even Darker Red / Blood */
-            --clr-text: #b0abab; /* Muted grey text */
-            --clr-text-muted: #757575;
-            --clr-text-header: #e0e0e0; /* Off-white for headers */
-            --clr-text-ui: #b71c1c; /* Red for specific UI */
+            --clr-bg: #050505;
+            --clr-panel-bg: rgba(20, 20, 22, 0.6); /* Adjusted opacity */
+            --clr-panel-bg-alt: rgba(28, 28, 31, 0.7); /* Adjusted opacity */
+            --clr-panel-border: rgba(255, 255, 255, 0.09); /* Slightly brighter border */
+            --clr-text-primary: #ededed; /* Slightly brighter text */
+            --clr-text-secondary: #a0a0a0; /* Slightly brighter secondary text */
+            --clr-icon: #c5c5c5; /* Slightly brighter icon */
+            --clr-icon-hover: #ffffff;
+            --clr-button-bg: rgba(45, 45, 50, 0.7); /* Adjusted color/opacity */
+            --clr-button-hover-bg: rgba(60, 60, 65, 0.8); /* Adjusted color/opacity */
+            --clr-button-border: rgba(255, 255, 255, 0.12); /* Slightly brighter border */
+            --clr-tab-active-bg: rgba(70, 70, 75, 0.85); /* Adjusted color/opacity */
+            --clr-shadow: rgba(0, 0, 0, 0.65); /* Slightly softer shadow */
+            --clr-glow: rgba(220, 220, 220, 0.12);
+            --clr-accent: #b71c1c;
+            --clr-accent-glow: rgba(183, 28, 28, 0.3); /* Accent glow color */
+            --clr-success: #4CAF50;
+            --clr-star: rgba(255, 255, 255, 0.7); /* Star color for particle effect */
 
-            --clr-glow-primary: rgba(183, 28, 28, 0.6);
-            --clr-glow-secondary: rgba(127, 0, 0, 0.5);
-            --clr-glow-accent: rgba(78, 0, 0, 0.7);
+            --radius-card: 1.3rem; /* Slightly larger radius */
+            --radius-button: 0.8rem;
+            --radius-full: 9999px;
+            --radius-xs: 0.3rem;
 
-            /* --- Fonts --- */
-            --font-display: 'Teko', sans-serif; /* Changed for horror feel */
-            --font-ui: 'Roboto Mono', monospace;
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
 
-            /* --- Layout --- */
-            --radius: 3px; /* Sharper radius */
-            --spacing-xs: 0.4rem;
-            --spacing-sm: 0.75rem;
-            --spacing-md: 1.25rem;
-            --spacing-lg: 1.75rem;
-            --spacing-xl: 2.5rem;
-            --transition-speed: 0.2s; /* Faster transitions */
+            --transition-speed: 0.25s;
+            --transition-speed-fast: 0.15s;
+            --transition-ease: ease-out;
         }
 
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        html {
-            scroll-behavior: smooth;
-            font-size: 15px;
-        }
+        html { scroll-behavior: smooth; font-size: 16px; }
 
         body {
-            font-family: var(--font-ui);
+            font-family: 'Poppins', 'Inter', sans-serif;
             background-color: var(--clr-bg);
-            color: var(--clr-text);
+            color: var(--clr-text-primary);
             line-height: 1.6;
-            overflow-x: hidden;
-            background-image:
-                /* Noise/Static overlay */
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 500 500' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"),
-                /* Subtle Radial Glows */
-                radial-gradient(circle at 5% 5%, var(--clr-glow-accent) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, var(--clr-glow-secondary) 0%, transparent 50%),
-                /* Dark Base */
-                var(--clr-bg);
-            background-size: cover, cover, cover, cover;
-            background-position: 0 0, 0 0, 0 0, 0 0;
-            background-attachment: fixed;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Align container top */
-            padding: var(--spacing-lg);
-            animation: fadeInBody 1s ease-out forwards;
-        }
-         @keyframes fadeInBody { from { opacity: 0; } to { opacity: 1; } }
-
-        .main-interface {
-            width: 100%;
-            max-width: 1050px;
-            background: var(--clr-panel-bg);
-            border: 1px solid var(--clr-panel-border);
-            border-radius: var(--radius);
-            box-shadow: 0 0 25px rgba(78, 0, 0, 0.3), inset 0 0 10px rgba(5, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            display: flex;
+            overflow-x: hidden;
             position: relative;
-            overflow: hidden;
-            animation: fadeInContainer 1s ease-out 0.2s forwards;
-            opacity: 0;
-            margin-top: var(--spacing-md);
-            margin-bottom: var(--spacing-md);
-            max-height: calc(100vh - var(--spacing-lg) * 2 - var(--spacing-md) * 2); /* Limit height */
-        }
-
-        @keyframes fadeInContainer {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .content-column {
-            flex-grow: 1;
-            padding: var(--spacing-lg) var(--spacing-xl);
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--clr-panel-border-secondary);
-            position: relative;
-            overflow-y: auto; /* Enable scrolling */
-        }
-
-        .content-column::-webkit-scrollbar {
-            width: 5px;
-        }
-        .content-column::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.2);
-        }
-        .content-column::-webkit-scrollbar-thumb {
-            background-color: var(--clr-primary);
-            border-radius: 2px;
-            border: 1px solid var(--clr-panel-bg);
-        }
-        .content-column::-webkit-scrollbar-thumb:hover {
-             background-color: var(--clr-secondary);
-        }
-
-        .visual-column {
-            width: 350px; /* Slightly narrower */
-            flex-shrink: 0;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(170deg, rgba(5, 2, 2, 0.6) 0%, rgba(20, 5, 5, 0.9) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: var(--spacing-md);
+            cursor: default;
+            transition: background-color 0.5s var(--transition-ease);
         }
 
-        @media (max-width: 900px) {
-            .main-interface {
-                flex-direction: column;
-                max-height: none; /* Remove height limit on mobile */
-            }
-            .visual-column { display: none; }
-            .content-column { border-right: none; overflow-y: visible; } /* Disable internal scroll */
-        }
-
-        /* Visual Column Effects (Horror Themed) */
-        .visual-column::before,
-        .visual-column::after {
+        /* Background Image */
+        body::before {
             content: '';
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.4;
-            filter: blur(70px); /* Increased blur */
+            position: fixed;
+            inset: 0;
+            z-index: -5;
+            background-image: url('https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80');
+            background-size: cover;
+            background-position: center center;
+            filter: blur(11px) brightness(50%) saturate(0.85); /* Adjusted filter */
+            transform: scale(1.05);
+            transition: filter 0.5s var(--transition-ease);
+        }
+
+        /* Noise Overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -4;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            opacity: 0.02; /* Even more subtle */
+            pointer-events: none;
+        }
+
+        /* Konami Code Background Effect */
+        body.easter-egg-bg::before {
+             filter: blur(12px) brightness(70%) saturate(1.5) hue-rotate(180deg);
+             transition: filter 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Added bouncy transition */
+        }
+
+        main {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg) var(--spacing-md);
             z-index: 1;
         }
-        .visual-column::before { /* Primary Red Glow */
-            width: 300px;
-            height: 350px;
-            background: var(--clr-primary);
-            bottom: -10%;
-            right: -30%;
-            animation: pulseGlowHorror 12s ease-in-out infinite alternate;
-        }
-        .visual-column::after { /* Darker Accent Glow */
-            width: 250px;
-            height: 300px;
-            background: var(--clr-accent);
-            top: -5%;
-            right: 5%;
-            animation: pulseGlowHorror 15s 1s ease-in-out infinite alternate;
-        }
-        @keyframes pulseGlowHorror {
-            from { transform: scale(0.85) rotate(10deg); opacity: 0.3; }
-            to { transform: scale(1.05) rotate(-5deg); opacity: 0.5; }
-        }
-        .static-overlay { /* Add a subtle static effect */
-             position: absolute;
-             inset: 0;
-             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
-             background-size: cover;
-             z-index: 2;
-             pointer-events: none;
-             animation: staticFlicker 0.15s infinite steps(1);
-        }
-         @keyframes staticFlicker {
-            0%, 100% { opacity: 0.06; }
-            50% { opacity: 0.09; }
-         }
 
-        /* --- Content Styling --- */
-        .header {
-            margin-bottom: var(--spacing-lg);
-            border-bottom: 1px solid var(--clr-panel-border-secondary);
-            padding-bottom: var(--spacing-md);
-            position: relative; /* For pseudo-element */
-        }
-        .header::after { /* Decorative corner */
-             content: '';
-             position: absolute;
-             bottom: 0;
-             right: 0;
-             width: 10px;
-             height: 10px;
-             border-bottom: 1px solid var(--clr-primary);
-             border-right: 1px solid var(--clr-primary);
-             opacity: 0.6;
+        .card-wrapper {
+            max-width: 42rem;
+            width: 100%;
+            margin: auto;
+            position: relative; /* Context for absolute positioning */
         }
 
-        .user-id {
-            font-family: var(--font-ui);
-            color: var(--clr-text-muted);
-            font-size: 0.8rem;
-            margin-bottom: var(--spacing-md);
-            display: block;
-            position: relative;
-            padding-left: var(--spacing-md);
-            text-transform: uppercase;
+        /* --- Particle/Star Effect --- */
+        .particles-container {
+            position: absolute;
+            inset: 0; /* Cover the wrapper */
+            overflow: hidden; /* Prevent overflow */
+            pointer-events: none; /* Don't interfere with clicks */
+            z-index: 1; /* Behind the card */
+            border-radius: var(--radius-card); /* Clip to card shape */
         }
-        .user-id::before {
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.7; }
+        }
+
+        .particles-container::before,
+        .particles-container::after {
             content: '';
             position: absolute;
+            top: 0;
             left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 6px;
-            height: 6px;
-            background-color: var(--clr-primary);
-            border-radius: 1px;
-            box-shadow: 0 0 6px var(--clr-glow-primary);
-            animation: pulseStatus 2s infinite ease-in-out;
-        }
-        @keyframes pulseStatus {
-            0%, 100% { transform: translateY(-50%) scale(1); opacity: 0.8; }
-            50% { transform: translateY(-50%) scale(0.7); opacity: 0.4; }
-        }
-        .user-id span {
-            color: var(--clr-text);
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            width: 1px; /* Small size */
+            height: 1px; /* Small size */
+            border-radius: 50%;
+            box-shadow: /* Multiple shadows create the particles */
+                6vw 15vh 1px var(--clr-star), 31vw 5vh 0px var(--clr-star), 58vw 34vh 1px var(--clr-star),
+                85vw 25vh 1px var(--clr-star), 13vw 80vh 0px var(--clr-star), 42vw 68vh 1px var(--clr-star),
+                77vw 52vh 0px var(--clr-star), 91vw 90vh 1px var(--clr-star), 22vw 40vh 1px var(--clr-star),
+                66vw 10vh 0px var(--clr-star), 49vw 95vh 1px var(--clr-star), 8vw 60vh 0px var(--clr-star);
+             animation: twinkle 7s infinite ease-in-out alternate;
         }
 
-        h1 {
-            font-family: var(--font-display);
-            font-size: clamp(2rem, 5vw, 2.8rem); /* Larger display font */
-            color: var(--clr-text-header);
-            margin-bottom: var(--spacing-xs);
-            text-shadow: 0 0 10px var(--clr-glow-secondary), 0 0 2px #000;
-            letter-spacing: 1px;
-            font-weight: 600;
-            line-height: 1.1;
-        }
-        h1 span {
-            color: var(--clr-primary);
-            text-shadow: 0 0 10px var(--clr-glow-primary);
+        .particles-container::after {
+            box-shadow: /* Different set of particles */
+                10vw 8vh 0px var(--clr-star), 39vw 45vh 1px var(--clr-star), 62vw 12vh 1px var(--clr-star),
+                80vw 70vh 0px var(--clr-star), 18vw 92vh 1px var(--clr-star), 50vw 28vh 0px var(--clr-star),
+                71vw 85vh 1px var(--clr-star), 95vw 15vh 1px var(--clr-star), 28vw 75vh 0px var(--clr-star),
+                55vw 58vh 1px var(--clr-star), 88vw 40vh 0px var(--clr-star), 5vw 30vh 1px var(--clr-star);
+            animation: twinkle 9s infinite ease-in-out alternate; /* Different duration/timing */
+             animation-delay: -2s; /* Start offset */
         }
 
-        .subtitle {
-            font-family: var(--font-ui);
-            font-size: 0.9rem;
-            color: var(--clr-text-muted);
-            margin-bottom: var(--spacing-lg);
-            max-width: 60ch;
-            font-style: italic;
-        }
-
-        .button-panel {
+        /* --- Profile Card --- */
+        .profile-card {
             display: flex;
             flex-direction: column;
-            gap: var(--spacing-sm);
-            margin-bottom: var(--spacing-xl);
-            width: 100%;
-            max-width: 320px;
+            gap: 0;
+            position: relative; /* Above particles */
+            backdrop-filter: blur(35px) saturate(130%); /* Enhanced blur/saturation */
+            -webkit-backdrop-filter: blur(35px) saturate(130%);
+            border-radius: var(--radius-card);
+            background: linear-gradient(150deg, var(--clr-panel-bg), var(--clr-panel-bg-alt)); /* Subtle gradient */
+            border: 1px solid var(--clr-panel-border);
+            box-shadow: 0 8px 32px 0 var(--clr-shadow); /* Softened shadow */
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: card-fade-in 0.8s var(--transition-ease) 0.2s forwards;
+            z-index: 2; /* Above particles */
         }
+        @keyframes card-fade-in { to { opacity: 1; transform: translateY(0); } }
 
-        .btn {
-            font-family: var(--font-ui);
-            background: rgba(0, 0, 0, 0.15);
-            border: 1px solid var(--clr-panel-border-secondary);
-            color: var(--clr-text-muted);
-            padding: var(--spacing-sm) var(--spacing-md);
-            border-radius: var(--radius);
-            cursor: pointer;
-            text-align: left;
-            font-weight: 600;
-            font-size: 0.85rem; /* Slightly smaller */
-            transition: all var(--transition-speed) ease;
+        .card-banner {
+            width: 100%;
+            height: 8rem;
+            background-color: rgba(10, 10, 12, 0.85); /* Darker base */
+            border-bottom: 1px solid var(--clr-panel-border);
             position: relative;
             overflow: hidden;
-            text-decoration: none;
+        }
+
+        .card-header {
+            position: relative;
+            padding-top: calc(60px + var(--spacing-sm));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: var(--spacing-md);
+        }
+
+        .avatar-container {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            left: 50%;
+            top: 0;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .avatar-image {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid var(--clr-bg);
+            object-fit: cover;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 255, 255, 0.05); /* Adjusted shadow */
+            transition: transform 0.2s var(--transition-ease);
+        }
+        .avatar-image.clicked {
+             transform: scale(0.95) rotate(5deg);
+        }
+
+        .username-container {
             display: flex;
             align-items: center;
             gap: var(--spacing-sm);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .btn::before {
-             content: '';
-             position: absolute;
-             left: 0;
-             top: 0;
-             bottom: 0;
-             width: 2px;
-             background-color: var(--clr-primary);
-             opacity: 0.7;
-             transform: scaleY(0);
-             transform-origin: center;
-             transition: transform var(--transition-speed) ease, opacity var(--transition-speed) ease;
+            margin-top: var(--spacing-xs);
         }
 
-        .btn:hover {
-            background: rgba(183, 28, 28, 0.1);
-            color: var(--clr-text);
-            border-color: var(--clr-primary);
-            transform: translateX(4px);
-        }
-         .btn:hover::before {
-             transform: scaleY(1);
-             opacity: 1;
-             box-shadow: 0 0 5px var(--clr-glow-primary);
-         }
-        .btn:active {
-            transform: translateX(2px);
-            background: rgba(183, 28, 28, 0.2);
-        }
-
-         .btn i {
-            width: 16px;
-            text-align: center;
-            color: var(--clr-primary);
-            transition: color var(--transition-speed) ease;
-            font-size: 0.9em;
-         }
-         .btn:hover i {
-             color: var(--clr-text-header);
-         }
-
-        section {
-            margin-bottom: var(--spacing-xl);
-        }
-         section h2 {
-             font-family: var(--font-display);
-             font-size: 1.5rem; /* Larger section headers */
-             color: var(--clr-primary);
-             margin-bottom: var(--spacing-md);
-             letter-spacing: 1px;
-             font-weight: 600;
-             display: flex;
-             align-items: center;
-             border-bottom: 1px solid var(--clr-panel-border);
-             padding-bottom: var(--spacing-xs);
-             text-shadow: 0 0 8px var(--clr-glow-primary);
-         }
-         section h2 i {
-             margin-right: var(--spacing-md);
-             color: var(--clr-primary);
-             font-size: 1.1rem;
-             opacity: 0.8;
-         }
-
-        .content-block {
-            font-size: 0.9rem;
-            color: var(--clr-text-muted);
-            background: var(--clr-panel-bg-alt);
-            padding: var(--spacing-md);
-            border-left: 2px solid var(--clr-primary);
-            border-radius: 0 var(--radius) var(--radius) 0;
-            box-shadow: inset 3px 0 8px rgba(183, 28, 28, 0.1);
-        }
-         .content-block strong {
-             color: var(--clr-text);
-             font-weight: 600;
-         }
-          .content-block a {
-              color: var(--clr-primary);
-              text-decoration: none;
-              font-weight: 600;
-              border-bottom: 1px dashed rgba(183, 28, 28, 0.5);
-              transition: color var(--transition-speed), border-color var(--transition-speed);
-          }
-          .content-block a:hover {
-              color: var(--clr-text-header);
-              border-color: var(--clr-primary);
-          }
-
-        /* Grid for Portfolio/Pricing */
-         .grid {
-            display: grid;
-            gap: var(--spacing-md);
-        }
-        .grid-cols-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-        .grid-cols-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-
-        .card {
-            background: var(--clr-panel-bg-alt);
-            padding: var(--spacing-md);
-            border: 1px solid var(--clr-panel-border-secondary);
-            border-radius: var(--radius);
-            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
-            box-shadow: inset 0 0 10px rgba(5, 0, 0, 0.5);
-        }
-        .card:hover {
-            transform: translateY(-3px);
-            border-color: var(--clr-primary);
-            box-shadow: 0 5px 15px rgba(78, 0, 0, 0.4), inset 0 0 10px rgba(5, 0, 0, 0.5);
-        }
-        .card h3, .card h4 {
-            font-family: var(--font-display);
-            color: var(--clr-text);
-            margin-bottom: var(--spacing-sm);
-            font-size: 1.2rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-         .card h4 a {
-             color: var(--clr-primary);
-             text-decoration: none;
-         }
-        .card p {
-            font-size: 0.85rem;
-            color: var(--clr-text-muted);
-            margin-bottom: 0;
-        }
-         .card .price {
-            font-family: var(--font-display);
+        .username {
             font-size: 2rem;
-            color: var(--clr-primary);
             font-weight: 700;
-            margin: var(--spacing-xs) 0 var(--spacing-sm);
-            text-shadow: 0 0 8px var(--clr-glow-primary);
-         }
-          .card.pricing-card { text-align: center; }
-          .card.pricing-card h3 { color: var(--clr-text-muted); font-size: 0.9rem; text-transform: uppercase; }
+            line-height: 1.2;
+            color: var(--clr-text-primary);
+            text-align: center;
+            word-break: break-all;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 8px rgba(255, 255, 255, 0.08); /* Adjusted shadow */
+        }
 
-        .contact-section {
-            text-align: center; /* Center elements in this section */
-        }
-        .contact-grid {
-            display: inline-flex; /* Align inline */
-            gap: var(--spacing-xl);
-            justify-content: center;
-            margin-top: var(--spacing-md);
-        }
-        .contact-link {
-            font-size: 1.8rem; /* Larger icons */
-            color: var(--clr-text-muted);
-            transition: all var(--transition-speed) ease;
+        .copy-button {
+            background: none;
+            border: none;
+            color: var(--clr-icon);
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding: var(--spacing-xs);
+            border-radius: var(--radius-xs);
+            transition: color var(--transition-speed-fast), background-color var(--transition-speed-fast), transform var(--transition-speed-fast);
             position: relative;
-            display: block;
         }
-        .contact-link:hover {
-            transform: translateY(-4px) scale(1.15);
-            color: var(--clr-primary);
-            text-shadow: 0 0 12px var(--clr-glow-primary);
+        .copy-button:hover {
+            color: var(--clr-icon-hover);
+            background-color: var(--clr-button-bg);
+            transform: scale(1.1);
         }
-        .contact-link::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 120%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--clr-primary);
-            color: #fff;
-            padding: var(--spacing-xs) var(--spacing-sm);
-            border-radius: 3px;
-            font-size: 0.7rem;
-            font-family: var(--font-ui);
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity var(--transition-speed) ease, visibility var(--transition-speed) ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-            z-index: 10;
+        .copy-button .tooltip {
+             bottom: 100%;
+             left: 50%;
+             transform: translateX(-50%) translateY(-var(--spacing-xs));
+             font-size: 0.75rem;
+             opacity: 0;
+             visibility: hidden;
+             transition: opacity var(--transition-speed), visibility var(--transition-speed), background-color var(--transition-speed-fast); /* Added bg transition */
         }
-        .contact-link:hover::after {
+        .copy-button:hover .tooltip {
             opacity: 1;
             visibility: visible;
         }
+         .copy-button .tooltip.copied {
+             background-color: var(--clr-success);
+             color: #fff;
+         }
+
+        .availability-status {
+            font-size: 0.85rem;
+            color: var(--clr-text-secondary);
+            margin-top: var(--spacing-xs);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            background-color: rgba(0, 0, 0, 0.25); /* Slightly darker */
+            border-radius: var(--radius-full);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+         .availability-status .status-icon {
+             color: var(--clr-success);
+             font-size: 0.6rem;
+             animation: pulse-status 2.5s infinite ease-in-out; /* Adjusted animation */
+         }
+          @keyframes pulse-status { /* Renamed animation */
+            0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+            70% { box-shadow: 0 0 0 5px rgba(76, 175, 80, 0); }
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--spacing-md);
+            list-style: none;
+            padding: 0;
+            margin-top: var(--spacing-md);
+        }
+        .social-links li {
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: link-fade-in 0.5s var(--transition-ease) forwards;
+        }
+        .social-links li:nth-child(1) { animation-delay: 0.3s; }
+        .social-links li:nth-child(2) { animation-delay: 0.35s; }
+        .social-links li:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes link-fade-in { to { opacity: 1; transform: translateY(0); } }
+
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.4); /* Adjusted opacity */
+            border: 1px solid var(--clr-panel-border);
+            border-radius: var(--radius-full);
+            color: var(--clr-icon);
+            font-size: 1.25rem;
+            text-decoration: none;
+            transition: all var(--transition-speed) var(--transition-ease);
+            position: relative;
+            overflow: hidden;
+        }
+        .social-icon:hover {
+            background-color: rgba(0, 0, 0, 0.65); /* Adjusted opacity */
+            transform: translateY(-3px) scale(1.08);
+            box-shadow: 0 6px 18px var(--clr-shadow), 0 0 12px var(--clr-glow); /* Enhanced shadow */
+            color: var(--clr-icon-hover);
+        }
+        .social-icon:hover i {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px var(--clr-glow));
+        }
+        .social-icon i {
+            transition: transform var(--transition-speed) var(--transition-ease), filter var(--transition-speed) var(--transition-ease);
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-var(--spacing-sm));
+            background-color: rgba(0, 0, 0, 0.85); /* Darker tooltip */
+            color: var(--clr-text-primary);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-xs);
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+            z-index: 20;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all var(--transition-speed) var(--transition-ease);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Darker shadow */
+        }
+        .social-links li:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(calc(-1 * var(--spacing-sm) - 5px));
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--clr-panel-border);
+            border-top: 1px solid var(--clr-panel-border);
+            background: rgba(0,0,0,0.2); /* Slightly darker */
+            opacity: 0;
+            transform: translateY(10px);
+            animation: section-fade-in 0.6s var(--transition-ease) 0.4s forwards;
+        }
+        .tab-button {
+            flex: 1;
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--clr-text-secondary);
+            background: none;
+            border: none;
+            border-right: 1px solid var(--clr-panel-border);
+            cursor: pointer;
+            transition: background-color var(--transition-speed), color var(--transition-speed), box-shadow var(--transition-speed);
+            text-align: center;
+            position: relative;
+        }
+        .tab-button:last-child { border-right: none; }
+        .tab-button:hover {
+            background-color: rgba(255,255,255,0.06); /* Slightly brighter hover */
+            color: var(--clr-text-primary);
+        }
+        .tab-button.active {
+            background-color: var(--clr-tab-active-bg);
+            color: var(--clr-text-primary);
+            box-shadow: inset 0 2px 0px var(--clr-accent), 0 0 12px var(--clr-accent-glow); /* Adjusted glow */
+         }
+
+        .tab-content {
+            display: none;
+            padding: var(--spacing-lg);
+        }
+        .tab-content.active {
+            display: block;
+            animation: content-fade-in 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; /* Smoother ease */
+        }
+        @keyframes content-fade-in {
+            from { opacity: 0; transform: translateY(8px); } /* Slightly more movement */
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .custom-links-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+        }
+        .custom-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-sm) var(--spacing-md);
+            background-color: var(--clr-button-bg);
+            border: 1px solid var(--clr-button-border);
+            border-radius: var(--radius-button);
+            color: var(--clr-text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all var(--transition-speed) var(--transition-ease);
+            overflow: hidden;
+            position: relative;
+        }
+         .custom-link::before { /* Hover gradient */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.07), transparent); /* Adjusted opacity */
+            transition: left 0.4s ease-in-out;
+        }
+        .custom-link:hover::before { left: 100%; }
+        .custom-link:hover {
+            background-color: var(--clr-button-hover-bg);
+            border-color: rgba(255, 255, 255, 0.2); /* Brighter hover border */
+            transform: translateY(-3px); /* Slightly more lift */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4); /* Adjusted shadow */
+        }
+        .custom-link .link-content {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            z-index: 1;
+        }
+        .custom-link i {
+            font-size: 1rem;
+            color: var(--clr-icon);
+            transition: color var(--transition-speed) var(--transition-ease);
+        }
+        .custom-link:hover i { color: var(--clr-icon-hover); }
+        .custom-link .arrow {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            transition: transform var(--transition-speed) var(--transition-ease), opacity var(--transition-speed) var(--transition-ease); /* Added opacity transition */
+            z-index: 1;
+        }
+        .custom-link:hover .arrow {
+            transform: translateX(4px);
+            opacity: 1;
+        }
+
+        .info-section {
+            margin-bottom: var(--spacing-lg);
+        }
+        .info-section:last-child { margin-bottom: 0; }
+        .info-section h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--clr-text-secondary);
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            border-bottom: 1px solid var(--clr-panel-border);
+            padding-bottom: var(--spacing-sm);
+            position: relative;
+        }
+         /* Section Header Accent Line */
+         .info-section h3::after {
+             content: '';
+             position: absolute;
+             bottom: -1px;
+             left: 0;
+             height: 2px;
+             width: 60px; /* Slightly wider */
+             background: linear-gradient(90deg, var(--clr-accent), rgba(183, 28, 28, 0)); /* Fades out */
+             opacity: 0.8; /* Slightly more visible */
+             border-radius: 1px;
+         }
+        .info-section h3 i {
+            color: var(--clr-icon);
+            font-size: 0.85rem;
+            opacity: 0.75; /* Slightly more visible */
+        }
+        .info-section p, .info-section ul {
+            font-size: 0.9rem;
+            color: var(--clr-text-secondary);
+            line-height: 1.75; /* Increased line height */
+            margin-bottom: var(--spacing-sm);
+        }
+        .info-section ul {
+            list-style: none;
+            padding-left: var(--spacing-sm);
+        }
+        .info-section li {
+            margin-bottom: var(--spacing-xs);
+            position: relative;
+            padding-left: 1.2em;
+            transition: transform var(--transition-speed-fast) ease-out, color var(--transition-speed-fast);
+        }
+        .info-section li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--clr-text-secondary);
+            opacity: 0.65; /* Slightly brighter bullet */
+            font-size: 0.8em;
+            transition: color var(--transition-speed-fast), transform var(--transition-speed-fast); /* Added transform transition */
+        }
+         .info-section li:hover {
+             transform: translateX(4px); /* Slightly more movement */
+             color: var(--clr-text-primary);
+         }
+         .info-section li:hover::before {
+             color: var(--clr-accent);
+             transform: rotate(180deg); /* Rotate bullet on hover */
+         }
+        .info-section strong {
+            color: var(--clr-text-primary);
+            font-weight: 600;
+        }
+        .info-section a {
+            color: var(--clr-accent); /* Make links accent color by default */
+            text-decoration: none;
+            border-bottom: 1px solid rgba(183, 28, 28, 0.4); /* Dashed accent border */
+            transition: color var(--transition-speed), border-color var(--transition-speed);
+            font-weight: 600;
+        }
+        .info-section a:hover {
+            color: var(--clr-text-primary); /* Change to primary on hover */
+            border-color: rgba(234, 234, 234, 0.6);
+        }
+
+        /* Skills Section Styles */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+        .skill-item {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            background-color: var(--clr-button-bg);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-button);
+            font-size: 0.85rem;
+            border: 1px solid var(--clr-button-border);
+            transition: transform var(--transition-speed) ease-out, box-shadow var(--transition-speed) ease-out, background-color var(--transition-speed) ease-out;
+        }
+         .skill-item i {
+             color: var(--clr-icon);
+             font-size: 0.9em;
+             opacity: 0.8;
+             transition: color var(--transition-speed) ease-out;
+         }
+         .skill-item:hover {
+             transform: translateY(-2px) scale(1.03); /* Added scale */
+             box-shadow: 0 4px 10px rgba(0,0,0,0.35); /* Adjusted shadow */
+             background-color: var(--clr-button-hover-bg);
+         }
+         .skill-item:hover i {
+            color: var(--clr-icon-hover);
+         }
+
+        /* Typing effect cursor */
+        #bio-text .typing-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1em;
+            background-color: var(--clr-text-primary);
+            animation: blink 0.8s infinite; /* Slightly slower blink */
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            border-radius: 1px; /* Rounded cursor */
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+
+        .music-player-container {
+            padding: var(--spacing-md) var(--spacing-lg);
+            background-color: rgba(0,0,0,0.3); /* Slightly darker */
+            border-top: 1px solid var(--clr-panel-border);
+            opacity: 0;
+            transform: translateY(10px);
+            animation: section-fade-in 0.6s var(--transition-ease) 0.7s forwards;
+        }
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            justify-content: center;
+        }
+        .play-pause-button {
+            background: none;
+            border: 1px solid var(--clr-button-border);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--clr-icon);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) var(--transition-ease);
+        }
+        .play-pause-button:hover {
+            background-color: var(--clr-button-bg);
+            color: var(--clr-icon-hover);
+            border-color: rgba(255, 255, 255, 0.25); /* Brighter border */
+            transform: scale(1.1);
+        }
+        .now-playing {
+            font-size: 0.85rem;
+            color: var(--clr-text-secondary);
+            text-align: center;
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+        }
+        .hidden-audio-player { display: none; }
 
         footer {
-            margin-top: var(--spacing-xl);
-            padding-top: var(--spacing-md);
-            border-top: 1px dashed var(--clr-panel-border);
-        }
-        .footer-text {
-            font-family: var(--font-ui);
-            font-size: 0.7rem;
-            color: var(--clr-text-muted);
-            text-align: left;
-            opacity: 0.5;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--clr-text-secondary);
+            opacity: 0.65; /* Slightly more visible */
+            border-top: 1px solid var(--clr-panel-border);
+            background-color: rgba(0,0,0,0.25); /* Slightly darker */
         }
 
-        ::selection {
-            background-color: var(--clr-primary);
-            color: #fff;
-            text-shadow: none;
-        }
-        ::-moz-selection {
-            background-color: var(--clr-primary);
-            color: #fff;
-            text-shadow: none;
+        @keyframes section-fade-in {
+            to { opacity: 1; transform: translateY(0); }
         }
 
+         /* Custom Scrollbar (WebKit) */
+        ::-webkit-scrollbar {
+            width: 9px; /* Slightly wider */
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.25); /* Darker track */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.18); /* Brighter thumb */
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle border */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3); /* Brighter hover */
+        }
+
+        /* --- Media Queries --- */
+        @media (max-width: 640px) {
+            body {
+                align-items: flex-start;
+                padding: var(--spacing-sm);
+            }
+            main {
+                padding: var(--spacing-md) var(--spacing-sm);
+            }
+            .profile-card {
+                backdrop-filter: blur(25px) saturate(115%); /* Adjusted mobile blur */
+                -webkit-backdrop-filter: blur(25px) saturate(115%);
+                border-radius: calc(var(--radius-card) - 0.2rem); /* Slightly smaller radius */
+            }
+            .card-banner { height: 6.5rem; } /* Slightly taller */
+            .avatar-container { width: 100px; height: 100px; }
+            .card-header { padding-top: calc(50px + var(--spacing-sm)); }
+            .username { font-size: 1.7rem; } /* Slightly larger */
+            .username-container { flex-direction: column; gap: var(--spacing-xs); }
+            .availability-status { font-size: 0.8rem; }
+            .social-links { gap: var(--spacing-sm); }
+            .social-icon { width: 40px; height: 40px; font-size: 1.1rem; }
+            .tabs { flex-direction: column; }
+            .tab-button { border-right: none; border-bottom: 1px solid var(--clr-panel-border); }
+            .tab-button.active { box-shadow: inset 3px 0 0px var(--clr-accent), 0 0 8px var(--clr-accent-glow); }
+            .tab-button:last-child { border-bottom: none; }
+            .tab-content { padding: var(--spacing-md); }
+            .custom-links-container { grid-template-columns: 1fr; }
+            .music-player-container { padding: var(--spacing-md); }
+            .player-controls { flex-direction: row; gap: var(--spacing-sm); }
+            .now-playing { max-width: calc(100% - 70px); } /* Adjusted width */
+            .info-section li:hover { transform: translateX(3px); } /* Less movement on mobile */
+        }
+
+        /* Selection Highlight */
+        ::selection { background-color: var(--clr-accent); color: var(--clr-text-primary); text-shadow: none; }
+        ::-moz-selection { background-color: var(--clr-accent); color: var(--clr-text-primary); text-shadow: none; }
     </style>
 </head>
 <body>
-
-    <div class="main-interface">
-        <div class="content-column" id="content-scroll-wrapper">
-            <div>
-                <header class="header">
-                    <div class="user-id">
-                        Operator Status: <span>smsgetter [Signal Acquired]</span>
+    <main>
+        <div class="card-wrapper">
+             <div class="particles-container"></div> <!-- Container for star effect -->
+            <div class="profile-card">
+                <div class="card-banner"></div>
+                <div class="card-header">
+                    <div class="avatar-container" id="avatar-container">
+                        <img src="https://raw.githubusercontent.com/smsgetter/smsgetter.github.io/main/%D0%A1%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%20%D0%B7%D0%B2%D1%91%D0%B7%D0%B4%20%D0%B8%20%D1%82%D0%B5%D0%BA%D1%81%D1%82%20_smsgetter_.png" alt="smsgetter Avatar" class="avatar-image" id="avatar-image" loading="lazy">
                     </div>
-                    <h1>SYSTEM INTERFACE: <span>SMSGETTER</span></h1>
-                    <p class="subtitle">// Dark Node Protocol v7G // Data Stream & Task Execution</p>
-                    <div class="button-panel">
-                        <a href="#about" class="btn"><i class="fas fa-terminal"></i> Operator Bio</a>
-                        <a href="#services" class="btn"><i class="fas fa-cogs"></i> Core Services</a>
-                        <a href="#portfolio" class="btn"><i class="fas fa-briefcase"></i> Project Logs</a>
-                        <a href="#pricing" class="btn"><i class="fas fa-file-invoice-dollar"></i> Engagement Tiers</a>
-                        <a href="#project-main" class="btn"><i class="fas fa-crosshairs"></i> Primary Project</a>
-                        <a href="#contact" class="btn"><i class="fas fa-plug"></i> Comms Link</a>
-                        <button class="btn copy-key" id="copyKeyButton"><i class="fas fa-key"></i><span id="copyButtonText">Copy Node Key</span></button>
+                    <div class="username-container">
+                        <h1 class="username" id="username-text">smsgetter</h1>
+                        <button class="copy-button" id="copy-username-btn" aria-label="Копировать Telegram ник">
+                            <i class="far fa-copy"></i>
+                            <span class="tooltip">Копировать ник</span>
+                        </button>
                     </div>
-                </header>
+                    <div class="availability-status">
+                        <i class="fas fa-circle status-icon"></i><span>Доступен для предложений</span>
+                    </div>
+                    <ul class="social-links">
+                        <li><a href="https://t.me/smsgetter" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a><span class="tooltip">Telegram</span></li>
+                        <li><a href="https://github.com/smsgetter" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub"><i class="fab fa-github"></i></a><span class="tooltip">GitHub</span></li>
+                        <li><a href="https://t.me/wartovcrypto" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Wartov Crypto Project"><i class="fas fa-rocket"></i></a><span class="tooltip">@wartovcrypto</span></li>
+                    </ul>
+                </div>
 
-                <main>
-                    <section id="about">
-                        <h2><i class="fas fa-id-card"></i> Operator Profile // smsgetter</h2>
-                        <div class="content-block">
-                           Я, <strong>smsgetter</strong>, функционирую как разработчик, специализирующийся на создании IT-решений в hostilе цифровой среде. Основные векторы: <strong>Telegram-системы</strong> (от простейших агентов до автономных комплексов), <strong>Web-интерфейсы</strong> (стелс-сайты, API-шлюзы) и <strong>Java-модули</strong> (высоконагруженные серверы, кастомные утилиты). Моя задача – трансформация абстрактных директив в исполняемый код для решения оперативных задач.
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="main">Главная</button>
+                    <button class="tab-button" data-tab="details">Детали</button>
+                </div>
+
+                <div id="main-content" class="tab-content active">
+                    <div class="custom-links-container">
+                        <a href="https://github.com/smsgetter?tab=repositories" target="_blank" rel="noopener noreferrer" class="custom-link">
+                            <span class="link-content"><i class="fas fa-code-branch"></i><span>Репозитории</span></span>
+                            <span class="arrow"><i class="fas fa-arrow-right"></i></span>
+                        </a>
+                        <a href="https://t.me/getterreviews" target="_blank" rel="noopener noreferrer" class="custom-link">
+                            <span class="link-content"><i class="fas fa-star"></i><span>Отзывы (getterreviews)</span></span>
+                            <span class="arrow"><i class="fas fa-arrow-right"></i></span>
+                        </a>
+                        <a href="https://t.me/StarCasinoTelegramBot" target="_blank" rel="noopener noreferrer" class="custom-link">
+                            <span class="link-content"><i class="fas fa-dice"></i><span>StarCasinoBot (Sale)</span></span>
+                            <span class="arrow"><i class="fas fa-arrow-right"></i></span>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="details-content" class="tab-content">
+                    <section class="info-section bio">
+                        <h3><i class="fas fa-terminal"></i> Био</h3>
+                        <p id="bio-text" data-typed="false">Разработчик IT-решений. Специализация: <strong>Telegram</strong> (боты, API), <strong>Web</strong> (сайты, шлюзы), <strong>Java</strong> (бэкенд). Трансформирую задачи в код.</p>
+                    </section>
+                     <section class="info-section skills">
+                        <h3><i class="fas fa-laptop-code"></i> Навыки</h3>
+                        <div class="skills-container">
+                            <span class="skill-item"><i class="fab fa-telegram"></i> Telegram Bot API</span>
+                            <span class="skill-item"><i class="fab fa-python"></i> Python</span>
+                            <span class="skill-item"><i class="fab fa-java"></i> Java</span>
+                            <span class="skill-item"><i class="fab fa-html5"></i> HTML</span>
+                            <span class="skill-item"><i class="fab fa-css3-alt"></i> CSS</span>
+                            <span class="skill-item"><i class="fab fa-js"></i> JavaScript</span>
+                            <span class="skill-item"><i class="fas fa-database"></i> SQL</span>
+                            <span class="skill-item"><i class="fab fa-git-alt"></i> Git</span>
+                            <span class="skill-item"><i class="fab fa-linux"></i> Linux</span>
                         </div>
                     </section>
-
-                     <section id="services">
-                        <h2><i class="fas fa-tools"></i> Core Service Matrix</h2>
-                        <div class="grid grid-cols-3">
-                            <div class="card">
-                                <h3><i class="fab fa-telegram-plane"></i> Telegram Systems</h3>
-                                <p>Боты, парсеры, API-интеграции, платежные шлюзы, админ-панели.</p>
-                            </div>
-                            <div class="card">
-                                <h3><i class="fas fa-code"></i> Web Development</h3>
-                                <p>Лендинги, API, бэк/фронт-енд, адаптивный/скрытный дизайн.</p>
-                            </div>
-                            <div class="card">
-                                <h3><i class="fab fa-java"></i> Java Modules</h3>
-                                <p>Серверы, API, утилиты, библиотеки. Надежность, производительность.</p>
-                            </div>
-                        </div>
+                    <section class="info-section activity">
+                        <h3><i class="fas fa-briefcase"></i> Деятельность</h3>
+                        <ul>
+                            <li>Обмен криптовалюты (~76.5₽ = 1 USDT)</li>
+                            <li>Покупка Яндекс.Отзывов & Яндекс.Айди</li>
+                            <li>Продажа аккаунтов Telegram, Discord, Funpay</li>
+                            <li>Proxy & Дополнительные сервисы</li>
+                            <li>Разработка ПО на заказ (см. прайс)</li>
+                        </ul>
                     </section>
-
-                    <section id="portfolio">
-                        <h2><i class="fas fa-history"></i> Project Archive</h2>
-                        <div class="grid grid-cols-2">
-                             <div class="card project-card">
-                                <h4><i class="fas fa-star"></i> @StarCasinoBot (Продано)</h4>
-                                <p>Комплексный игровой бот-казино Telegram. Демонстрация возможностей.</p>
-                            </div>
-                            <div class="card project-card">
-                                <h4><i class="fas fa-robot"></i> Automated Bots (10+)</h4>
-                                <p>Боты для платежей, рассылок, CRM-интеграций, автоответчики.</p>
-                            </div>
-                            <div class="card project-card">
-                                <h4><i class="fas fa-check-circle"></i> FunPay Orders (30+)</h4>
-                                <p>Успешно выполненные заказы (до блокировки). Подтвержденный опыт.</p>
-                            </div>
-                            <div class="card project-card">
-                                <h4><i class="fas fa-globe"></i> Web Interfaces</h4>
-                                <p>Лендинги и сайты-визитки для различных клиентов.</p>
-                            </div>
-                        </div>
+                    <section class="info-section pricing">
+                        <h3><i class="fas fa-dollar-sign"></i> Прайс (Разработка)</h3>
+                        <ul>
+                            <li>Микро-задачи: <strong>от 5$</strong></li>
+                            <li>Стандарт (бот/сайт): <strong>от 15$</strong></li>
+                            <li>Комплекс (полный цикл): <strong>от 30$</strong></li>
+                        </ul>
+                        <p style="font-size: 0.8em; opacity: 0.7;">Оплата: Crypto (USDT+), Карта РФ, TG Stars.</p>
                     </section>
-
-                    <section id="pricing">
-                        <h2><i class="fas fa-tags"></i> Engagement Tiers</h2>
-                         <div class="grid grid-cols-3">
-                            <div class="card pricing-card">
-                                <h3>// Tier 1: Micro</h3>
-                                <div class="price">от 5$</div>
-                                <p>Правки, консультации, скрипты.</p>
-                            </div>
-                            <div class="card pricing-card">
-                                <h3>// Tier 2: Standard</h3>
-                                <div class="price">от 15$</div>
-                                <p>Бот/сайт/утилита по ТЗ.</p>
-                            </div>
-                            <div class="card pricing-card">
-                                <h3>// Tier 3: Complex</h3>
-                                <div class="price">от 30$</div>
-                                <p>Полный цикл разработки.</p>
-                            </div>
-                        </div>
-                        <p style="text-align: center; margin-top: var(--spacing-md); color: var(--clr-text-muted); font-size: 0.8rem;">*Протоколы оплаты: Crypto (USDT+), Карта РФ, TG Stars.</p>
+                    <section class="info-section conditions">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Условия</h3>
+                        <p>Без спама и угроз — ЧС. Соблюдение ТЗ и сроков.</p>
                     </section>
+                </div>
 
-                    <section id="project-main">
-                        <h2><i class="fas fa-crosshairs"></i> Primary Objective // CryptoWartov</h2>
-                         <div class="content-block">
-                            Основной активный проект: <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer">@cryptowartov_bot</a>. Автономный Telegram-бот для перехвата и анализа чеков от крипто-ботов. Высокая скорость реакции, продвинутая фильтрация данных.
-                            <br>
-                            <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="btn" style="margin-top: var(--spacing-md); border-color: var(--clr-primary); color: var(--clr-primary); max-width: 200px;">
-                                <i class="fab fa-telegram-plane"></i> Access Channel
-                            </a>
-                        </div>
-                    </section>
+                 <div class="music-player-container">
+                     <div class="player-controls">
+                         <button id="play-pause-btn" class="play-pause-button" aria-label="Play/Pause">
+                             <i class="fas fa-play"></i>
+                         </button>
+                         <span id="now-playing-text" class="now-playing">Madk1D - Толпы</span>
+                     </div>
+                     <audio id="audio-player" loop class="hidden-audio-player">
+                         <source src="https://raw.githubusercontent.com/smsgetter/smsgetter.github.io/main/Madk1D%20%D0%A2%D0%BE%D0%BB%D0%BF%D1%8B.mp3" type="audio/mpeg">
+                         Ваш браузер не поддерживает аудио элемент.
+                     </audio>
+                 </div>
 
-                    <section id="contact" class="contact-section">
-                        <h2><i class="fas fa-link"></i> Comms Link // Contact</h2>
-                        <div class="content-block" style="text-align: center; border-left: none; border-top: 2px solid var(--clr-primary); border-radius: var(--radius);">
-                            <p>Для инициации контакта или обсуждения задач:</p>
-                            <div class="contact-grid">
-                                <a href="https://t.me/smsgetter" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Telegram: @smsgetter">
-                                    <i class="fab fa-telegram-plane"></i>
-                                </a>
-                                <a href="#" class="contact-link" data-tooltip="Channel Offline" style="opacity: 0.3; cursor: default;">
-                                    <i class="fas fa-broadcast-tower"></i>
-                                </a>
-                                 <a href="https://t.me/cryptowartov_bot" target="_blank" rel="noopener noreferrer" class="contact-link" data-tooltip="Primary Project Bot">
-                                    <i class="fas fa-robot"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </section>
-                </main>
+                <footer><p>© smsgetter 2025</p></footer>
             </div>
-
-            <footer>
-                <p class="footer-text">// SYS_TIME: <span id="sys-time">--:--:--</span> // NODE_ID: SMSGETTER // STATUS: ACTIVE //</p>
-            </footer>
         </div>
-
-        <div class="visual-column">
-            <div class="static-overlay"></div>
-           <!-- Abstract effects here -->
-        </div>
-    </div>
+    </main>
 
     <script>
-        const copyButton = document.getElementById('copyKeyButton');
-        const copyButtonText = document.getElementById('copyButtonText');
-        let isKeyCopied = false;
+        // --- Existing JavaScript (no changes needed here) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-button');
+            const contents = document.querySelectorAll('.tab-content');
+            const audioPlayer = document.getElementById('audio-player');
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const playPauseIcon = playPauseBtn.querySelector('i');
+            const nowPlayingText = document.getElementById('now-playing-text');
+            const defaultTrackName = 'Madk1D - Толпы';
+            const bioTextElement = document.getElementById('bio-text');
+            const usernameTextElement = document.getElementById('username-text');
+            const copyUsernameBtn = document.getElementById('copy-username-btn');
+            const copyTooltip = copyUsernameBtn.querySelector('.tooltip');
+            const avatarContainer = document.getElementById('avatar-container');
+            const avatarImage = document.getElementById('avatar-image');
 
-        copyButton.addEventListener('click', () => {
-            if (isKeyCopied) return;
+            let isPlaying = false;
+            let typingTimeout;
 
-            const accessKey = `SMSG7G-KEY-${Math.random().toString(36).slice(2, 9).toUpperCase()}`;
-            navigator.clipboard.writeText(accessKey).then(() => {
-                isKeyCopied = true;
-                const originalText = copyButtonText.textContent;
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetTabId = tab.getAttribute('data-tab');
+                    const targetContent = document.getElementById(targetTabId + '-content');
 
-                copyButton.style.borderColor = 'var(--clr-secondary)';
-                copyButton.style.color = 'var(--clr-text)';
-                copyButton.querySelector('i').style.color = 'var(--clr-text)';
-                copyButton.style.boxShadow = `0 0 10px var(--clr-glow-secondary)`;
-                copyButtonText.textContent = 'KEY COPIED!';
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
 
-
-                setTimeout(() => {
-                    copyButtonText.textContent = originalText;
-                    copyButton.style.borderColor = '';
-                    copyButton.style.color = '';
-                    copyButton.querySelector('i').style.color = '';
-                    copyButton.style.boxShadow = '';
-                    isKeyCopied = false;
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy key: ', err);
-                copyButtonText.textContent = 'COPY ERROR!';
-                 setTimeout(() => {
-                    copyButtonText.textContent = originalText;
-                }, 2000);
+                    tab.classList.add('active');
+                    if (targetContent) { // Check if element exists
+                        targetContent.classList.add('active');
+                         if (targetTabId === 'details' && bioTextElement && bioTextElement.dataset.typed === 'false') {
+                             startTypingEffect(bioTextElement, bioTextElement.textContent);
+                             bioTextElement.dataset.typed = 'true';
+                         }
+                    } else {
+                        console.error(`Content element with ID ${targetTabId}-content not found.`);
+                    }
+                });
             });
-        });
 
-        // Smooth Scroll Fix for Scrollable Container
-        const contentColumn = document.getElementById('content-scroll-wrapper');
-        document.querySelectorAll('.button-panel a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                 e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    // Calculate position relative to the scrollable container
-                    const offsetTop = targetElement.offsetTop - contentColumn.offsetTop - 20; // 20px offset from top
+            if(nowPlayingText) nowPlayingText.textContent = defaultTrackName;
 
-                    contentColumn.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
+            if(playPauseBtn) {
+                playPauseBtn.addEventListener('click', () => {
+                    if (!audioPlayer) return;
+                    if (isPlaying) {
+                        audioPlayer.pause();
+                    } else {
+                        audioPlayer.play().catch(error => {
+                            console.error("Audio play failed:", error);
+                            resetAudioUI();
+                        });
+                    }
+                });
+            }
+
+            if (audioPlayer) {
+                audioPlayer.addEventListener('play', () => {
+                    if(playPauseIcon) playPauseIcon.classList.replace('fa-play', 'fa-pause');
+                    if(nowPlayingText) nowPlayingText.textContent = `Играет: ${defaultTrackName}`;
+                    isPlaying = true;
+                });
+
+                audioPlayer.addEventListener('pause', () => {
+                    resetAudioUI();
+                });
+
+                audioPlayer.addEventListener('error', (e) => {
+                    console.error("Audio player error:", e);
+                    if(nowPlayingText) nowPlayingText.textContent = "Ошибка аудио";
+                    resetAudioUI();
+                });
+            }
+
+
+            function resetAudioUI() {
+                if(playPauseIcon) playPauseIcon.classList.replace('fa-pause', 'fa-play');
+                if(nowPlayingText) nowPlayingText.textContent = defaultTrackName;
+                isPlaying = false;
+            }
+
+             if(copyUsernameBtn && usernameTextElement && copyTooltip) {
+                 copyUsernameBtn.addEventListener('click', () => {
+                     const textToCopy = usernameTextElement.textContent.trim();
+                     navigator.clipboard.writeText(textToCopy).then(() => {
+                         copyTooltip.textContent = 'Скопировано!';
+                         copyTooltip.classList.add('copied');
+                         if(copyUsernameBtn.querySelector('i')) copyUsernameBtn.querySelector('i').classList.replace('fa-copy', 'fa-check');
+
+                         setTimeout(() => {
+                             copyTooltip.textContent = 'Копировать ник';
+                             copyTooltip.classList.remove('copied');
+                            if(copyUsernameBtn.querySelector('i')) copyUsernameBtn.querySelector('i').classList.replace('fa-check', 'fa-copy');
+                         }, 1500);
+                     }).catch(err => {
+                         console.error('Failed to copy username: ', err);
+                         copyTooltip.textContent = 'Ошибка копирования';
+                          setTimeout(() => {
+                             copyTooltip.textContent = 'Копировать ник';
+                         }, 1500);
+                     });
+                 });
+             }
+
+
+            function typeWriter(element, text, i, callback) {
+                if (i < text.length) {
+                    element.innerHTML = text.substring(0, i + 1) + '<span class="typing-cursor"></span>';
+                    typingTimeout = setTimeout(() => {
+                        typeWriter(element, text, i + 1, callback);
+                    }, 50);
+                } else {
+                     element.innerHTML = text;
+                     if (callback) callback();
                 }
-            });
+            }
+
+            function startTypingEffect(element, text) {
+                 clearTimeout(typingTimeout);
+                 element.innerHTML = '<span class="typing-cursor"></span>';
+                 typeWriter(element, text.trim(), 0);
+            }
+
+             console.log("%c smsgetter %c was here %c https://smsgetter.github.io/",
+                 "background:#b71c1c; color:#fff; padding:5px; border-radius: 3px 0 0 3px;",
+                 "background:#1a1a1a; color:#fff; padding:5px; border-radius: 0 3px 3px 0;",
+                 "");
+
+             const konamiCode = [
+                 'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+                 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+                 'b', 'a'
+             ];
+             let konamiIndex = 0;
+             document.addEventListener('keydown', (event) => {
+                 if (event.key.toLowerCase() === konamiCode[konamiIndex].toLowerCase()) {
+                     konamiIndex++;
+                     if (konamiIndex === konamiCode.length) {
+                         console.log('Konami Code Activated! ✨');
+                         document.body.classList.add('easter-egg-bg');
+                         setTimeout(() => {
+                            document.body.classList.remove('easter-egg-bg');
+                         }, 3000);
+                         konamiIndex = 0;
+                     }
+                 } else {
+                     konamiIndex = 0;
+                 }
+             });
+
+            let avatarClickCount = 0;
+            let avatarClickTimer = null;
+
+            if (avatarContainer && avatarImage) {
+                avatarContainer.addEventListener('click', () => {
+                    avatarClickCount++;
+                    avatarImage.classList.add('clicked');
+
+                    clearTimeout(avatarClickTimer);
+
+                    avatarClickTimer = setTimeout(() => {
+                        avatarClickCount = 0;
+                    }, 500);
+
+                     setTimeout(() => {
+                         avatarImage.classList.remove('clicked');
+                     }, 150);
+
+
+                    if (avatarClickCount === 5) {
+                        console.log('Avatar Easter Egg! 🥚');
+                        const currentTransition = avatarImage.style.transition; // Store current transition
+                        avatarImage.style.transition = 'transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)'; // Bouncy spin
+                        avatarImage.style.transform = 'rotate(360deg) scale(1.1)'; // Add scale during spin
+
+                        setTimeout(() => {
+                            avatarImage.style.transform = 'rotate(0deg) scale(1)'; // Reset transform
+                             // Restore original transition *after* animation completes
+                            setTimeout(() => {
+                                avatarImage.style.transition = currentTransition || 'transform 0.2s ease-out'; // Restore or default
+                             }, 500);
+                         }, 500);
+                        avatarClickCount = 0;
+                        clearTimeout(avatarClickTimer);
+                    }
+                });
+            }
+
+             // Add null checks for safety in JS
+             if (!bioTextElement) console.error("Bio text element not found");
+             // etc. for other elements if needed
+
         });
-
-        // System Time Clock
-        const timeElement = document.getElementById('sys-time');
-        function updateTime() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
-        }
-        setInterval(updateTime, 1000);
-        updateTime(); // Initial call
-
     </script>
 
 </body>
-</html>
+    </html>
