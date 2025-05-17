@@ -38,6 +38,7 @@
             --clr-shadow: rgba(0, 0, 0, 0.6);
             --clr-glow: rgba(229, 57, 53, 0.18);
             --clr-accent: #e53935;
+            --clr-accent-rgb: 229, 57, 53;
             --clr-accent-glow: rgba(229, 57, 53, 0.45);
             --clr-success: #4CAF50;
             --clr-star: rgba(255, 255, 255, 0.65);
@@ -249,6 +250,12 @@
             margin-top: var(--spacing-xs);
         }
 
+        .username-main-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .username {
             font-family: 'Poppins', sans-serif;
             font-size: 2.2rem;
@@ -259,6 +266,14 @@
             word-break: break-all;
             margin: 0;
             text-shadow: 0 2px 6px rgba(0,0,0,0.65), 0 0 12px rgba(255, 255, 255, 0.08);
+        }
+        .username-alias {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--clr-text-secondary);
+            opacity: 0.9;
+            margin-top: 2px;
+            line-height: 1;
         }
 
         .copy-button {
@@ -274,7 +289,7 @@
         }
         .copy-button:hover, .copy-button:focus-visible {
             color: var(--clr-accent);
-            background-color: rgba(var(--clr-accent-rgb, 229, 57, 53), 0.12);
+            background-color: rgba(var(--clr-accent-rgb), 0.12);
             transform: scale(1.18);
         }
         .copy-button .tooltip {
@@ -583,7 +598,7 @@
         .info-section a {
             color: var(--clr-accent);
             text-decoration: none;
-            border-bottom: 1px dashed rgba(var(--clr-accent-rgb, 229, 57, 53), 0.6);
+            border-bottom: 1px dashed rgba(var(--clr-accent-rgb), 0.6);
             transition: color var(--transition-speed), border-color var(--transition-speed);
             font-weight: 600;
         }
@@ -811,10 +826,10 @@
                 grid-template-columns: 1fr;
             }
              .tabs {
-                flex-wrap: wrap; /* Allow tabs to wrap on small screens if many */
+                flex-wrap: wrap;
             }
             .tab-button {
-                flex-basis: 50%; /* Two tabs per row approx if wrapping */
+                flex-basis: 50%;
                 font-size: 0.9rem;
             }
         }
@@ -838,6 +853,7 @@
             .card-header { padding-top: calc(52px + var(--spacing-sm)); }
             .username { font-size: 1.9rem; }
             .username-container { flex-direction: column; gap: var(--spacing-xs); }
+            .username-alias { font-size: 0.75rem; }
             .availability-status { font-size: 0.85rem; }
             .social-links { gap: var(--spacing-md); }
             .social-icon { width: 44px; height: 44px; font-size: 1.2rem; }
@@ -869,7 +885,10 @@
                         <img src="https://raw.githubusercontent.com/smsgetter/smsgetter.github.io/main/%D0%A1%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%20%D0%B7%D0%B2%D1%91%D0%B7%D0%B4%20%D0%B8%20%D1%82%D0%B5%D0%BA%D1%81%D1%82%20_smsgetter_.png" alt="smsgetter Avatar" class="avatar-image" id="avatar-image" loading="lazy">
                     </div>
                     <div class="username-container">
-                        <h1 class="username" id="username-text">smsgetter</h1>
+                        <div class="username-main-wrapper">
+                            <h1 class="username" id="username-text">smsgetter</h1>
+                            <span class="username-alias">aka wartov1337</span>
+                        </div>
                         <button class="copy-button" id="copy-username-btn" aria-label="Копировать Telegram ник">
                             <i class="far fa-copy"></i>
                             <span class="tooltip">Копировать ник</span>
@@ -948,8 +967,8 @@
 
                 <div id="details-content" class="tab-content">
                     <section class="info-section bio">
-                        <h3><i class="fas fa-terminal"></i> Био</h3>
-                        <p id="bio-text" data-typed="false">Разработчик IT-решений. Специализация: <strong>Telegram</strong> (боты, API), <strong>Web</strong> (сайты, шлюзы), <strong>Java</strong> (бэкенд). Трансформирую задачи в код. Оказываю помощь в коде и запуске проектов.</p>
+                        <h3><i class="fas fa-user-secret"></i> Кто я?</h3>
+                        <p id="bio-text" data-typed="false">Создаю IT-решения, превращая концепции в рабочий код. Фокус на: <strong>Telegram</strong> (боты, API), <strong>Web</strong> (сайты, шлюзы), <strong>Java</strong> (бэкенд). Помогаю с кодом и запуском проектов. <br><br><strong>Принципы:</strong> Честность с заказчиками — основа. Скамом не занимаюсь. Угрозы (сват/докс и т.п.) бесполезны и не заслуживают внимания. <br><br>#MOPS clnx</p>
                     </section>
                      <section class="info-section skills">
                         <h3><i class="fas fa-laptop-code"></i> Навыки</h3>
@@ -1062,8 +1081,8 @@
                     tab.classList.add('active');
                     if (targetContent) {
                         targetContent.classList.add('active');
-                         if ((targetTabId === 'details' || targetTabId === 'products' /* For any tab where typing might be desired */) && bioTextElement && bioTextElement.dataset.typed === 'false' && targetContent.contains(bioTextElement)) {
-                             startTypingEffect(bioTextElement, bioTextElement.textContent);
+                         if ((targetTabId === 'details' || targetTabId === 'products' ) && bioTextElement && bioTextElement.dataset.typed === 'false' && targetContent.contains(bioTextElement)) {
+                             startTypingEffect(bioTextElement, bioTextElement.innerHTML);
                              bioTextElement.dataset.typed = 'true';
                          }
                     } else {
@@ -1136,26 +1155,61 @@
              }
 
 
-            function typeWriter(element, text, i, callback) {
+            function typeWriter(element, htmlContent, i, callback) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = htmlContent;
+                const text = tempDiv.textContent || tempDiv.innerText || "";
+
                 if (i < text.length) {
-                    element.innerHTML = text.substring(0, i + 1) + '<span class="typing-cursor"></span>';
+                    let currentText = text.substring(0, i + 1);
+                    let displayHtml = "";
+                    let textIndex = 0;
+
+                    function reconstructHtml(node) {
+                        if (textIndex >= currentText.length) return "";
+                        if (node.nodeType === Node.TEXT_NODE) {
+                            let availableChars = currentText.length - textIndex;
+                            let nodeText = node.textContent.substring(0, availableChars);
+                            textIndex += nodeText.length;
+                            return nodeText;
+                        } else if (node.nodeType === Node.ELEMENT_NODE) {
+                            let elementHtml = `<${node.nodeName.toLowerCase()}`;
+                            for (let attr of node.attributes) {
+                                elementHtml += ` ${attr.name}="${attr.value}"`;
+                            }
+                            elementHtml += `>`;
+                            for (let child of node.childNodes) {
+                                elementHtml += reconstructHtml(child);
+                                if (textIndex >= currentText.length) break;
+                            }
+                            elementHtml += `</${node.nodeName.toLowerCase()}>`;
+                            return elementHtml;
+                        }
+                        return "";
+                    }
+
+                    for(let child of tempDiv.childNodes){
+                        displayHtml += reconstructHtml(child);
+                         if (textIndex >= currentText.length) break;
+                    }
+
+                    element.innerHTML = displayHtml + '<span class="typing-cursor"></span>';
                     typingTimeout = setTimeout(() => {
-                        typeWriter(element, text, i + 1, callback);
+                        typeWriter(element, htmlContent, i + 1, callback);
                     }, 40);
                 } else {
-                     element.innerHTML = text.replace('<span class="typing-cursor"></span>', '');
+                     element.innerHTML = htmlContent.replace('<span class="typing-cursor"></span>', '');
                      if (callback) callback();
                 }
             }
 
-            function startTypingEffect(element, text) {
+            function startTypingEffect(element, htmlContent) {
                  clearTimeout(typingTimeout);
                  element.innerHTML = '<span class="typing-cursor"></span>';
-                 typeWriter(element, text.trim(), 0);
+                 typeWriter(element, htmlContent.trim(), 0);
             }
-             // Initial check for bio on page load if details tab is active
             if (document.querySelector('.tab-button[data-tab="details"].active') && bioTextElement && bioTextElement.dataset.typed === 'false') {
-                startTypingEffect(bioTextElement, bioTextElement.textContent);
+                startTypingEffect(bioTextElement, bioTextElement.innerHTML);
                 bioTextElement.dataset.typed = 'true';
             }
 
@@ -1231,4 +1285,4 @@
     </script>
 
 </body>
-    </html>
+</html>
